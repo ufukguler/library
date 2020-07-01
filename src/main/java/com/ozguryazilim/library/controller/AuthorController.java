@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ozguryazilim.library.repository.AuthorRepo;
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/author")
 public class AuthorController {
     @Autowired
     AuthorRepo authorRepo;
