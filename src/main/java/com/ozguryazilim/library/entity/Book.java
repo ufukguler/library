@@ -1,8 +1,12 @@
-package com.ozguryazilim.library.model;
+package com.ozguryazilim.library.entity;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "book")
+@EntityListeners(AuditingEntityListener.class)
 public class Book{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +40,14 @@ public class Book{
         this.comment = comment;
         this.author = author;
         this.publisher = publisher;
+    }
+    public Book(Long id,String title, String alt, String series, Long isbn, String comment) {
+        this.id = id;
+        this.title = title;
+        this.alt = alt;
+        this.series = series;
+        this.isbn = isbn;
+        this.comment = comment;
     }
 
     public Long getId() {
@@ -101,4 +113,6 @@ public class Book{
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
+
 }
+
