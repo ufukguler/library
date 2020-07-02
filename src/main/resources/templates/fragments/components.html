@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav class="navbar navbar-default" th:fragment="menu">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Library</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/books">Books</a></li>
+            <li><a href="/authors">Authors</a></li>
+            <li><a href="/publishers">Publishers</a></li>
+        </ul>
+        <a href="/logout"><button class="btn btn-danger navbar-btn pull-right">Logout</button></a>
+    </div>
+</nav>
+
+<footer class="page-footer font-small special-color-dark pt-4" th:fragment="footer">
+    <div class="footer-copyright text-center py-3"> Library application </div>
+</footer>
+</body>
+</html>
