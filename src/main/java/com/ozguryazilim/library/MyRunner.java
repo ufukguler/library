@@ -1,7 +1,7 @@
 package com.ozguryazilim.library;
 
 
-import com.ozguryazilim.library.model.*;
+import com.ozguryazilim.library.entity.*;
 import com.ozguryazilim.library.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,28 +31,44 @@ public class MyRunner implements CommandLineRunner {
     private UserRepo userRepo;
 
     @Override
-    public void run(String... args) throws Exception {
-        Author author = new Author("yazar","gerilim romanları yazar");
-        Publisher pub = new Publisher("yayin evi","xx yayın evi");
-
-        //String title, String alt, String series, Long isbn, String comment, Author author, Publisher publisher
-        Book book = new Book("Sapiens","alt isim","seri",9780099590088L,"aciklama",author,pub);
+    public void run(String[] args){
+        Author author = new Author("Yuval Noah Harari","cultural evolution");
+        Publisher pub = new Publisher("Harper","about.");
+        Book book = new Book("Sapiens: A Brief History of Humankind","alt","series",9780099590088L,"sapiens",author,pub);
 
         AuthorRepo.save(author);
         PublisherRepo.save(pub);
         BookRepo.save(book);
 
-        UserRole userRole = new UserRole("user");
+        Author author1 = new Author("Arthur C. Clarke","sci-fi");
+        Publisher pub1 = new Publisher("Ballantine Books ","about..");
+        Book book1 = new Book("Childhood's End","alt","series",9786053755111L,"childhood",author1,pub1);
+
+        AuthorRepo.save(author1);
+        PublisherRepo.save(pub1);
+        BookRepo.save(book1);
+
+        Author author2 = new Author("Stephen Hawking","Popular Science");
+        Publisher pub2 = new Publisher("Bantam Dell Publishing Group","about...");
+        Book book2 = new Book("A Brief History of Time","alt","series",9786051067582L,"stephen",author2,pub2);
+
+        AuthorRepo.save(author2);
+        PublisherRepo.save(pub2);
+        BookRepo.save(book2);
+
+        /*
+        UserRole userRole = new UserRole("ADMIN");
+        UserRole manager = new UserRole("USER");
+
         userRoleRepo.save(userRole);
-        UserRole manager = new UserRole("manager");
         userRoleRepo.save(manager);
 
-        User user = new User("user1","ufukglr@yandex.com","password",userRole);
-        User user2 = new User("user2","ufukglr@gmail.com","password",manager);
+        User user = new User("user1","mail","password",userRole);
+        User user2 = new User("user2","mail","password",manager);
 
         userRepo.save(user);
         userRepo.save(user2);
-
+        */
 
     }
 }
