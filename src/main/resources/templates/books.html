@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Books</title>
+</head>
+<body>
+<div th:insert="fragments/components :: menu"></div>
+<div class="container">
+    <h2>Books</h2>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr style="font-weight: bold;">
+                    <td scope="col">Id</td>
+                    <td scope="col">Title</td>
+                    <td scope="col">Author</td>
+                    <td scope="col">Publisher</td>
+                    <td scope="col">Alt Title</td>
+                    <td scope="col">Series</td>
+                    <td scope="col">ISBN</td>
+                    <td scope="col">About</td>
+                    <td scope="col"></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="book:${books}">
+                    <td th:text="${book.id}"></td>
+                    <td th:text="${book.title}"></td>
+                    <td>
+                        <a th:href="@{/author/{id}(id=${book.author.id})}">
+                            <p th:text="${book.author.name}"></p>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/publisher/{id}(id=${book.publisher.id})}">
+                            <p th:text="${book.publisher.name}"></p>
+                        </a>
+                    </td>
+                    <td th:text="${book.alt}"></td>
+                    <td th:text="${book.series}"></td>
+                    <td th:text="${book.isbn}"></td>
+                    <td th:text="${book.comment}"></td>
+                    <td>
+                        <a th:href="@{/books/edit/{id}(id=${book.id})}">
+                            <button class="btn btn-dark pull-right">Edit Book</button>
+                        </a>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:insert="fragments/components :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Authors</title>
+</head>
+<body>
+<div th:insert="fragments/components :: menu"></div>
+<div class="container">
+    <h2>Authors</h2>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr style="font-weight: bold;">
+                <td scope="col">Id</td>
+                <td scope="col">Name</td>
+                <td scope="col">About</td>
+                <td scope="col"></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="author:${authors}">
+                <td th:text="${author.id}"></td>
+                <td th:text="${author.name}"></td>
+                <td th:text="${author.comment}"></td>
+                <td>
+                    <a th:href="@{/authors/edit/{id}(id=${author.id})}">
+                        <button class="btn btn-dark pull-right">Edit Author</button>
+                    </a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:insert="fragments/components :: footer"></div>
+</body>
+</html>
