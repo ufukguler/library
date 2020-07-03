@@ -15,11 +15,11 @@
     <form th:action="@{/authors/edit/{id}(id=${id})}"  th:object="${selectedAuthor}" method="post">
         <div class="form-group">
             <label for="title">Title</label>
-            <input class="form-control" type="text" id="name" placeholder="Name" th:field="*{name}">
+            <input class="form-control" type="text" id="name" placeholder="Name" th:field="*{name}" required>
         </div>
         <div class="form-group">
             <label for="comment">About</label>
-            <input class="form-control" type="text" id="comment" placeholder="About" th:field="*{comment}">
+            <input class="form-control" type="text" id="comment" placeholder="About" th:field="*{comment}" required>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
