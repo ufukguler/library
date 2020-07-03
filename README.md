@@ -6,7 +6,7 @@ Library  is a spring boot project that you can add a book, author, and publisher
 - Add Book, Author & Publisher
 - Display Book, Author & Publisher
 - Delete Book, Author & Publisher _(admin only)_
-- <del>Login / Register</del>
+- Login / Register
 - <del>Change Password / Email</del>
 
 ### Tech
@@ -25,25 +25,30 @@ $ GRANT ALL PRIVILEGES ON 'library'.* TO 'library'@'localhost';
 $ FLUSH PRIVILEGES;
 $ CREATE DATABASE library CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
-Run the app.
+### Run the app.
 #### Linux
 ```sh
-$ cd library
-$ ./mvnw spring:boot-run
+$ ./mvn clean spring-boot:run
 ```
-
 #### Windows
 ```sh
-$ cd library
-$ mvnw spring:boot-run
+$ mvn clean spring-boot:run
 ```
-### Predefined in Memory Users
+
+
+
+### Predefined Admin & User
 ```sh
-ROLE  login - pass
-------------------
-ADMIN admin - 123
-USER  user  - 123
+ROLE   login - pass
+-------------------
+ADMIN  admin - 123
+USER   user  - 123
 ```
+### Login Page
+[http://localhost:8080/login](http://localhost:8080/login)
+
+---
+
 License
 ----
 
