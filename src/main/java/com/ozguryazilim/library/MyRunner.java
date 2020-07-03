@@ -1,12 +1,14 @@
 package com.ozguryazilim.library;
 
 
-import com.ozguryazilim.library.entity.*;
+import com.ozguryazilim.library.model.*;
 import com.ozguryazilim.library.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 
@@ -23,9 +25,6 @@ public class MyRunner implements CommandLineRunner {
 
     @Autowired
     private PublisherRepo PublisherRepo;
-
-    @Autowired
-    private UserRoleRepo userRoleRepo;
 
     @Autowired
     private UserRepo userRepo;
@@ -56,19 +55,21 @@ public class MyRunner implements CommandLineRunner {
         PublisherRepo.save(pub2);
         BookRepo.save(book2);
 
-        /*
-        UserRole userRole = new UserRole("ADMIN");
-        UserRole manager = new UserRole("USER");
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword(passwordEncoder.encode("123"));
+        admin.setMail("admin@library.com");
+        admin.setActive(true);
+        admin.setRoles("ROLE_ADMIN");
+        userRepo.save(admin);
 
-        userRoleRepo.save(userRole);
-        userRoleRepo.save(manager);
-
-        User user = new User("user1","mail","password",userRole);
-        User user2 = new User("user2","mail","password",manager);
-
+        User user = new User();
+        user.setUsername("user");
+        user.setPassword(passwordEncoder.encode("123"));
+        user.setMail("user@library.com");
+        user.setActive(true);
+        user.setRoles("ROLE_USER");
         userRepo.save(user);
-        userRepo.save(user2);
-        */
-
     }
 }
