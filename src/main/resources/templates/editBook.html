@@ -15,38 +15,38 @@
     <form th:action="@{ /books/edit/{id}(id=${id})}"  th:object="${selectedBook}" method="post">
         <div class="form-group">
             <label for="title">Title</label>
-            <input class="form-control" type="text" id="title" placeholder="Title" th:field="*{title}">
+            <input class="form-control" type="text" id="title" placeholder="Title" th:field="*{title}" required>
         </div>
         <div class="form-group">
             <label for="alt">Alt Title</label>
-            <input class="form-control" type="text" id="alt" placeholder="Alt Title" th:field="*{alt}">
+            <input class="form-control" type="text" id="alt" placeholder="Alt Title" th:field="*{alt}" required>
         </div>
         <div class="form-group">
             <label for="series">Series</label>
-            <input class="form-control" type="text" id="series" placeholder="Series" th:field="*{series}">
+            <input class="form-control" type="text" id="series" placeholder="Series" th:field="*{series}" required>
         </div>
         <div class="form-group">
             <label for="isbn">ISBN</label>
-            <input class="form-control" type="text" id="isbn" maxlength="13" minlength="13" placeholder="ISBN" th:field="*{isbn}">
+            <input class="form-control" type="text" id="isbn" maxlength="13" minlength="13" placeholder="ISBN" th:field="*{isbn}" required>
         </div>
         <div class="form-group">
             <label for="about">About</label>
-            <input class="form-control" type="text" id="about" placeholder="About" th:field="*{comment}">
+            <input class="form-control" type="text" id="about" placeholder="About" th:field="*{comment}" required>
         </div>
-        <!--
         <div class="form-group">
             <label for="authorId">Author</label>
-            <select id="authorId" name="authorId" class="form-control">
+            <select id="authorId" name="authorId" class="form-control" required>
+                <option disabled selected value>Select an Author</option>
                 <option th:each="author: ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
             </select>
         </div>
         <div class="form-group">
             <label for="publisherId">Publisher</label>
-            <select id="publisherId" name="publisherId" class="form-control">
+            <select id="publisherId" name="publisherId" class="form-control" required>
+                <option disabled value>Select a publisher</option>
                 <option th:each="publisher: ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}"></option>
             </select>
         </div>
-        -->
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>

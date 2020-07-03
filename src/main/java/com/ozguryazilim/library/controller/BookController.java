@@ -35,13 +35,17 @@ public class BookController {
     @GetMapping("/books/new")
     public String show(Model model) {
         model.addAttribute("newBook", new Book());
+        model.addAttribute("authors", authorRepo.findAll());
+        model.addAttribute("publishers", publisherRepo.findAll());
         return "newBook";
     }
 
     @PostMapping("books/new")
     public String getBook(Book book) {
+        book.setAuthor(authorRepo.getOne(new Long(book.getAuthorId())));
+        book.setPublisher(publisherRepo.getOne(new Long(book.getPublisherId())));
         bookRepo.save(book);
-        return "newBook";
+        return "books";
     }
 
     @GetMapping("/books/edit/{id}")
@@ -54,7 +58,9 @@ public class BookController {
 
     @RequestMapping(value = "/books/edit/{id}", method = RequestMethod.POST)
     public String updateBook(Model model, Book book, @PathVariable(value = "id") Long id) {
-        bookRepo.updateBook(id, book.getTitle(), book.getAlt(), book.getSeries(), book.getIsbn(), book.getComment());
+        book.setAuthor(authorRepo.getOne(new Long(book.getAuthorId())));
+        book.setPublisher(publisherRepo.getOne(new Long(book.getPublisherId())));
+        bookRepo.save(book);
         model.addAttribute("selectedBook", bookRepo.findById(id));
         model.addAttribute("id", id);
         return "redirect:/books";

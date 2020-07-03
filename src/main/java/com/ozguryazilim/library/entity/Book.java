@@ -41,6 +41,19 @@ public class Book {
     public Book() {
     }
 
+    public Book(Long id, String title, String alt, String series, Long isbn, String comment, Author author, Publisher publisher, String authorId, String publisherId) {
+        this.id = id;
+        this.title = title;
+        this.alt = alt;
+        this.series = series;
+        this.isbn = isbn;
+        this.comment = comment;
+        this.author = author;
+        this.publisher = publisher;
+        this.authorId = authorId;
+        this.publisherId = publisherId;
+    }
+
     // main constructor
     public Book(String title, String alt, String series, Long isbn, String comment, Author author, Publisher publisher) {
         this.title = title;
@@ -143,6 +156,8 @@ public class Book {
                 ", comment='" + comment + '\'' +
                 ", author=" + author +
                 ", publisher=" + publisher +
+                ", authorId='" + authorId + '\'' +
+                ", publisherId='" + publisherId + '\'' +
                 '}';
     }
 }

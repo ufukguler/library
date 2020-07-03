@@ -12,8 +12,5 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface BookRepo extends JpaRepository<Book,Long> {
-    @Modifying
-    @Transactional
-    @Query(value = "update book set title= :title, alt= :alt, series= :series, isbn= :isbn, comment= :comment  where id = :id", nativeQuery = true)
-    int updateBook(Long id, String title, String alt, String series, Long isbn, String comment);
+
 }
