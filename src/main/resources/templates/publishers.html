@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +13,16 @@
 <div th:insert="fragments/components :: menu"></div>
 <div class="container">
     <h2>Publishers</h2>
+    <a th:href="@{/publishers/new}">
+        <button type="button" class="btn btn-outline-secondary">Add Publisher</button>
+    </a>
     <hr>
+    <div th:if="${param.true}">
+        <h4>Deleted.</h4>
+    </div>
+    <div th:if="${param.false}">
+        <h4>Error.</h4>
+    </div>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -21,6 +31,7 @@
                     <td scope="col">Name</td>
                     <td scope="col">About</td>
                     <td></td>
+                    <td scope="col" sec:authorize="hasRole('ADMIN')"></td>
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +41,12 @@
                 <td th:text="${publisher.comment}"></td>
                 <td>
                     <a th:href="@{/publishers/edit/{id}(id=${publisher.id})}">
-                        <button class="btn btn-dark pull-right">Edit Publisher</button>
+                        <button class="btn btn-primary pull-right">Edit Publisher</button>
+                    </a>
+                </td>
+                <td scope="col" sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/publishers/delete/{id}(id=${publisher.id})}">
+                        <button class="btn btn-danger pull-right">Delete Publisher</button>
                     </a>
                 </td>
             </tr>

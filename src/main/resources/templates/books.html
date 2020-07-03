@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +13,16 @@
 <div th:insert="fragments/components :: menu"></div>
 <div class="container">
     <h2>Books</h2>
+    <a th:href="@{/books/new}">
+        <button type="button" class="btn btn-outline-secondary">Add Book</button>
+    </a>
     <hr>
+    <div th:if="${param.true}">
+        <h4>Deleted.</h4>
+    </div>
+    <div th:if="${param.false}">
+        <h4>Error.</h4>
+    </div>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -26,6 +36,7 @@
                     <td scope="col">ISBN</td>
                     <td scope="col">About</td>
                     <td scope="col"></td>
+                    <td scope="col" sec:authorize="hasRole('ADMIN')"></td>
                 </tr>
             </thead>
             <tbody>
@@ -33,12 +44,12 @@
                     <td th:text="${book.id}"></td>
                     <td th:text="${book.title}"></td>
                     <td>
-                        <a th:href="@{/author/{id}(id=${book.author.id})}">
+                        <a th:href="@{/authors/edit/{id}(id=${book.author.id})}">
                             <p th:text="${book.author.name}"></p>
                         </a>
                     </td>
                     <td>
-                        <a th:href="@{/publisher/{id}(id=${book.publisher.id})}">
+                        <a th:href="@{/publishers/edit/{id}(id=${book.publisher.id})}">
                             <p th:text="${book.publisher.name}"></p>
                         </a>
                     </td>
@@ -48,10 +59,14 @@
                     <td th:text="${book.comment}"></td>
                     <td>
                         <a th:href="@{/books/edit/{id}(id=${book.id})}">
-                            <button class="btn btn-dark pull-right">Edit Book</button>
+                            <button class="btn btn-primary pull-right">Edit Book</button>
                         </a>
                     </td>
-
+                    <td scope="col" sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/books/delete/{id}(id=${book.id})}">
+                            <button class="btn btn-danger pull-right">Delete Book</button>
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>
