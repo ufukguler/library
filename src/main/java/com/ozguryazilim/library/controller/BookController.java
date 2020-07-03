@@ -4,11 +4,16 @@ import com.ozguryazilim.library.entity.Book;
 import com.ozguryazilim.library.repository.AuthorRepo;
 import com.ozguryazilim.library.repository.PublisherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import com.ozguryazilim.library.repository.BookRepo;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Controller
 public class BookController {
@@ -47,10 +52,9 @@ public class BookController {
         return "editBook";
     }
 
-    @PostMapping("/books/edit/{id}")
+    @RequestMapping(value = "/books/edit/{id}", method = RequestMethod.POST)
     public String updateBook(Model model, Book book, @PathVariable(value = "id") Long id) {
-        System.out.println(book.toString());
-        //bookRepo.save(book);
+        bookRepo.updateBook(id, book.getTitle(), book.getAlt(), book.getSeries(), book.getIsbn(), book.getComment());
         model.addAttribute("selectedBook", bookRepo.findById(id));
         model.addAttribute("id", id);
         return "redirect:/books";
@@ -60,7 +64,7 @@ public class BookController {
     public String deleteBook(@PathVariable(value = "id") long id, RedirectAttributes redirectAttributes) {
         bookRepo.deleteById(id);
         boolean isFound = bookRepo.existsById(id);
-        if(isFound)
+        if (isFound)
             redirectAttributes.addAttribute("false", "");
         else
             redirectAttributes.addAttribute("true", "");

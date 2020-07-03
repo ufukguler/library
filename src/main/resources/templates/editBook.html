@@ -12,7 +12,7 @@
 <div th:insert="fragments/components :: menu"></div>
 
 <div class="container" >
-    <form th:action="@{/books/edit/{id}(id=${id})}"  th:object="${selectedBook}" method="post">
+    <form th:action="@{ /books/edit/{id}(id=${id})}"  th:object="${selectedBook}" method="post">
         <div class="form-group">
             <label for="title">Title</label>
             <input class="form-control" type="text" id="title" placeholder="Title" th:field="*{title}">
@@ -27,29 +27,66 @@
         </div>
         <div class="form-group">
             <label for="isbn">ISBN</label>
-            <input class="form-control" type="text" id="isbn" placeholder="ISBN" th:field="*{isbn}">
+            <input class="form-control" type="text" id="isbn" maxlength="13" minlength="13" placeholder="ISBN" th:field="*{isbn}">
         </div>
         <div class="form-group">
             <label for="about">About</label>
             <input class="form-control" type="text" id="about" placeholder="About" th:field="*{comment}">
         </div>
+        <!--
         <div class="form-group">
-            <label for="author">Author</label>
-            <select id="author" name="author" class="form-control">
+            <label for="authorId">Author</label>
+            <select id="authorId" name="authorId" class="form-control">
                 <option th:each="author: ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
             </select>
         </div>
         <div class="form-group">
-            <label for="publisher">Publisher</label>
-            <select id="publisher" class="form-control">
+            <label for="publisherId">Publisher</label>
+            <select id="publisherId" name="publisherId" class="form-control">
                 <option th:each="publisher: ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}"></option>
             </select>
         </div>
+        -->
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 </div>
+<script>
+$("#submit").attr("disabled",true);
+
+//isbn de 13 karakter siniri icin
+function setInputFilter(textbox, inputFilter) {
+  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+    textbox.addEventListener(event, function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
+  });
+}
+// input filters.
+setInputFilter(document.getElementById("isbn"), function(value) {return /^-?\d*$/.test(value); });
+
+$(document).ready(function (){
+    document.getElementById("isbn").oninput = function() {
+        var data = $("#isbn").val();
+        var dataLength = data.length;
+        if(dataLength !== 13){
+            $("#submit").attr("disabled",true);
+        }else{
+            $("#submit").attr("disabled",false);
+        }
+    };
+});
+</script>
 <!-- footer -->
 <div th:insert="fragments/components :: footer"></div>
 
