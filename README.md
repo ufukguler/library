@@ -4,8 +4,8 @@ Library  is a spring boot project that you can add a book, author, and publisher
 
 ## Features
 - Add Book, Author & Publisher
-- Delete Book, Author & Publisher _(admin only)_
 - Display Book, Author & Publisher
+- Delete Book, Author & Publisher _(admin only)_
 - <del>Login / Register</del>
 - <del>Change Password / Email</del>
 
@@ -37,7 +37,13 @@ $ ./mvnw spring:boot-run
 $ cd library
 $ mvnw spring:boot-run
 ```
-
+### Predefined in Memory Users
+```sh
+ROLE  login - pass
+------------------
+ADMIN admin - 123
+USER  user  - 123
+```
 License
 ----
 
