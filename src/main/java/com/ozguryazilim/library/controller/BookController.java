@@ -1,19 +1,14 @@
 package com.ozguryazilim.library.controller;
 
-import com.ozguryazilim.library.entity.Book;
+import com.ozguryazilim.library.model.Book;
 import com.ozguryazilim.library.repository.AuthorRepo;
 import com.ozguryazilim.library.repository.PublisherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import com.ozguryazilim.library.repository.BookRepo;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @Controller
 public class BookController {
@@ -33,7 +28,7 @@ public class BookController {
     }
 
     @GetMapping("/books/new")
-    public String show(Model model) {
+    public String newBook(Model model) {
         model.addAttribute("newBook", new Book());
         model.addAttribute("authors", authorRepo.findAll());
         model.addAttribute("publishers", publisherRepo.findAll());
@@ -41,15 +36,15 @@ public class BookController {
     }
 
     @PostMapping("books/new")
-    public String getBook(Book book) {
-        book.setAuthor(authorRepo.getOne(new Long(book.getAuthorId())));
-        book.setPublisher(publisherRepo.getOne(new Long(book.getPublisherId())));
+    public String newBook(Book book) {
+        book.setAuthor(authorRepo.getOne(Long.valueOf(book.getAuthorId())));
+        book.setPublisher(publisherRepo.getOne(Long.valueOf(book.getPublisherId())));
         bookRepo.save(book);
         return "books";
     }
 
     @GetMapping("/books/edit/{id}")
-    public String getBook(Model model, @PathVariable(value = "id") Long id) {
+    public String editBook(Model model, @PathVariable(value = "id") Long id) {
         model.addAttribute("selectedBook", bookRepo.findById(id));
         model.addAttribute("authors", authorRepo.findAll());
         model.addAttribute("publishers", publisherRepo.findAll());
@@ -58,8 +53,8 @@ public class BookController {
 
     @RequestMapping(value = "/books/edit/{id}", method = RequestMethod.POST)
     public String updateBook(Model model, Book book, @PathVariable(value = "id") Long id) {
-        book.setAuthor(authorRepo.getOne(new Long(book.getAuthorId())));
-        book.setPublisher(publisherRepo.getOne(new Long(book.getPublisherId())));
+        book.setAuthor(authorRepo.getOne(Long.valueOf(book.getAuthorId())));
+        book.setPublisher(publisherRepo.getOne(Long.valueOf(book.getPublisherId())));
         bookRepo.save(book);
         model.addAttribute("selectedBook", bookRepo.findById(id));
         model.addAttribute("id", id);

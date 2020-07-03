@@ -1,7 +1,7 @@
 package com.ozguryazilim.library.controller;
 
-import com.ozguryazilim.library.entity.Book;
-import com.ozguryazilim.library.entity.Publisher;
+import com.ozguryazilim.library.model.Book;
+import com.ozguryazilim.library.model.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,19 +23,19 @@ public class PublisherController {
     }
 
     @GetMapping("/publishers/new")
-    public String show(Model model) {
+    public String newPublisher(Model model) {
         model.addAttribute("newPublisher", new Book());
         return "newPublisher";
     }
 
     @PostMapping("publishers/new")
-    public String getBook(Publisher publisher) {
+    public String newPublisher(Publisher publisher) {
         publisherRepo.save(publisher);
         return "redirect:/publishers";
     }
 
     @GetMapping("/publishers/edit/{id}")
-    public String getBook(Model model, @PathVariable(value = "id") Long id) {
+    public String editPublisher(Model model, @PathVariable(value = "id") Long id) {
         model.addAttribute("selectedPublisher", publisherRepo.findById(id));
         return "editPublisher";
     }
@@ -50,7 +50,7 @@ public class PublisherController {
     }
 
     @GetMapping("/publishers/delete/{id}")
-    public String deletePublisher(@PathVariable(value = "id") long id, RedirectAttributes redirectAttributes) {
+    public String deleteAuthor(@PathVariable(value = "id") long id, RedirectAttributes redirectAttributes) {
         publisherRepo.deleteById(id);
         boolean isFound = publisherRepo.existsById(id);
         if(isFound)

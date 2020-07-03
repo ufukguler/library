@@ -1,4 +1,4 @@
-package com.ozguryazilim.library.entity;
+package com.ozguryazilim.library.model;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

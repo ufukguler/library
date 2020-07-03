@@ -1,7 +1,7 @@
 package com.ozguryazilim.library.controller;
 
-import com.ozguryazilim.library.entity.Author;
-import com.ozguryazilim.library.entity.Book;
+import com.ozguryazilim.library.model.Author;
+import com.ozguryazilim.library.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,19 +23,19 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/new")
-    public String show(Model model) {
+    public String newAuthor(Model model) {
         model.addAttribute("newAuthor", new Book());
         return "newAuthor";
     }
 
     @PostMapping("authors/new")
-    public String getBook(Author author) {
+    public String newAuthor(Author author) {
         authorRepo.save(author);
         return "redirect:/authors";
     }
 
     @GetMapping("/authors/edit/{id}")
-    public String editAuthor(Model model, @PathVariable(value = "id") Long id) {
+    public String newAuthor(Model model, @PathVariable(value = "id") Long id) {
         model.addAttribute("selectedAuthor", authorRepo.findById(id));
         model.addAttribute("id", authorRepo.findById(id).get().getId().toString());
         return "editAuthor";
