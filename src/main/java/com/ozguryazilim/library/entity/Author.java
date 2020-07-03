@@ -19,7 +19,7 @@ public class Author {
     private String comment;
 
     // 1->n book-author
-    @OneToMany(mappedBy = "author")
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY, mappedBy = "author")
     private List<Book> books = new ArrayList<>();
 
     public Author(){}

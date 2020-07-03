@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "book")
 @EntityListeners(AuditingEntityListener.class)
-public class Book{
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,15 +23,25 @@ public class Book{
     private String comment;
 
     // 1->n author-book
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
     // 1->n publisher-book
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
 
-    public Book(){}
+    @Transient
+    private String authorId;
 
+    @Transient
+    private String publisherId;
+
+    public Book() {
+    }
+
+    // main constructor
     public Book(String title, String alt, String series, Long isbn, String comment, Author author, Publisher publisher) {
         this.title = title;
         this.alt = alt;
@@ -40,14 +50,6 @@ public class Book{
         this.comment = comment;
         this.author = author;
         this.publisher = publisher;
-    }
-    public Book(Long id,String title, String alt, String series, Long isbn, String comment) {
-        this.id = id;
-        this.title = title;
-        this.alt = alt;
-        this.series = series;
-        this.isbn = isbn;
-        this.comment = comment;
     }
 
     public Long getId() {
@@ -114,5 +116,34 @@ public class Book{
         this.publisher = publisher;
     }
 
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
+    public String getPublisherId() {
+        return publisherId;
+    }
+
+    public void setPublisherId(String publisherId) {
+        this.publisherId = publisherId;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", alt='" + alt + '\'' +
+                ", series='" + series + '\'' +
+                ", isbn=" + isbn +
+                ", comment='" + comment + '\'' +
+                ", author=" + author +
+                ", publisher=" + publisher +
+                '}';
+    }
 }
 
