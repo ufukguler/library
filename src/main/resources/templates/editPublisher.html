@@ -12,7 +12,7 @@
 <div th:insert="fragments/components :: menu"></div>
 
 <div class="container" >
-    <form action="@{/publishers/edit}"  th:object="${selectedPublisher}">
+    <form th:action="@{/publishers/edit/{id}(id=${id})}"  th:object="${selectedPublisher}" method="post">
         <div class="form-group">
             <label for="title">Title</label>
             <input class="form-control" type="text" id="name" placeholder="Name" th:field="*{name}">

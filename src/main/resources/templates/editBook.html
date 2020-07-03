@@ -12,26 +12,38 @@
 <div th:insert="fragments/components :: menu"></div>
 
 <div class="container" >
-    <form action="@{/books/edit}"  th:object="${selectedBook}">
+    <form th:action="@{/books/edit/{id}(id=${id})}"  th:object="${selectedBook}" method="post">
         <div class="form-group">
             <label for="title">Title</label>
             <input class="form-control" type="text" id="title" placeholder="Title" th:field="*{title}">
         </div>
         <div class="form-group">
-            <label for="title">Alt Title</label>
+            <label for="alt">Alt Title</label>
             <input class="form-control" type="text" id="alt" placeholder="Alt Title" th:field="*{alt}">
         </div>
         <div class="form-group">
-            <label for="title">Series</label>
+            <label for="series">Series</label>
             <input class="form-control" type="text" id="series" placeholder="Series" th:field="*{series}">
         </div>
         <div class="form-group">
-            <label for="title">ISBN</label>
+            <label for="isbn">ISBN</label>
             <input class="form-control" type="text" id="isbn" placeholder="ISBN" th:field="*{isbn}">
         </div>
         <div class="form-group">
-            <label for="title">About</label>
+            <label for="about">About</label>
             <input class="form-control" type="text" id="about" placeholder="About" th:field="*{comment}">
+        </div>
+        <div class="form-group">
+            <label for="author">Author</label>
+            <select id="author" name="author" class="form-control">
+                <option th:each="author: ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="publisher">Publisher</label>
+            <select id="publisher" class="form-control">
+                <option th:each="publisher: ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}"></option>
+            </select>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
