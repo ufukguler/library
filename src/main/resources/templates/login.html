@@ -2,45 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/sign-in/signin.css">
     <title>Login</title>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
-<body>
-<div>
-
-    <div class="container">
-
-        <div id="login-row" class="row justify-content-center align-items-center">
-            <div id="login-column" class="col-md-6">
-                <div id="login-box" class="col-md-12">
-                    <form id="login-form" class="form" th:action="@{/login}" method="post">
-                        <div id="login">
-                            <h3 class="text-center pt-5">Login form</h3>
-                        </div>
-                        <h6 class="text-center" th:if="${param.error}" style="color: red;">Invalid username or password.</h6>
-                        <h6 class="text-center" th:if="${param.logout}">You have been logged out.</h6>
-                        <div class="form-group">
-                            <label for="username" class="text-info">Username:</label><br>
-                            <input type="text" name="username" id="username" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="text-info">Password:</label><br>
-                            <input type="password" name="password" id="password" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" name="submit" class="btn btn-info btn-md" value="Login">
-                        </div>
-                        <div id="register-link" class="text-right">
-                            Don't have an account? <a href="/register" class="text-info">Register here</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<body class="text-center">
+    <form class="form-signin" th:action="@{/login}" method="post">
+        <h1 class="h3 mb-3 font-weight-normal text-center">Sign in</h1>
+        <div class="text-center">
+            <img class="img-fluid" src="https://image.flaticon.com/icons/svg/85/85595.svg" alt="" width="72" height="72">
         </div>
-    </div>
-</div>
-</div>
+        <br>
+        <h6 class="h6 mb-3 font-weight-normal text-center" th:if="${param.error}" style="color: red;">Invalid username or password.</h6>
+        <h6 class="h6 mb-3 font-weight-normal text-center" th:if="${param.logout}">You have been logged out.</h6>
+
+
+        <label for="username" class="sr-only">Username:</label>
+        <input type="username" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
+
+        <label for="password" class="sr-only">Password:</label><br>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <br>
+        <div id="register-link" class="text-right">
+            Don't have an account? <a href="/register" class="text-info">Register here!</a>
+        </div>
+        <p class="mt-5 mb-3 text-muted text-center">&copy; Library 2020</p>
+    </form>
 </body>
 </html>
