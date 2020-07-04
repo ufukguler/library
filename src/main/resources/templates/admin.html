@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Change User Role</title>
+</head>
+<body>
+<div th:insert="fragments/components :: menu"></div>
+
+<div class="container">
+    <h2>Change User Role</h2>
+    <h6 style="color: red;">You can also change your role to the USER.</h6>
+    <h5 th:if="${param.success}" class="text-center">Success.</h5>
+    <form th:action="@{/admin/changeRole}" method="post" th:object="${users}">
+        <h6 th:if="${param.success}" class="text-center" style="color: green;">Role successfully changed!</h6>
+        <div class="form-group">
+            <label for="id">User</label>
+            <select id="id" name="id" class="form-control" required>
+                <option disabled selected value>Select a User</option>
+                <option th:each="user: ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <select id="roles" name="roles" class="form-control" required>
+                <option disabled selected value>Select a Role</option>
+                <option value="ROLE_USER">User</option>
+                <option value="ROLE_ADMIN">Admin</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Change Role</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<main class="container" role="main">
+    <div class="container-fluid">
+        <h1>Users</h1>
+        <hr>
+        <div class="row">
+            <table class="table table-striped ">
+                <thead>
+                <tr>
+                    <td>User Id</td>
+                    <td>Username</td>
+                    <td>Email</td>
+                    <td>User Role</td>
+                    <td>Active</td>
+                </tr>
+                </thead>
+                <tbody th:object="${users}" >
+                    <tr th:each="user: ${users}">
+                        <th scope="row" th:text="${user.id}"></th>
+                        <th scope="row" th:text="${user.username}"></th>
+                        <th scope="row" th:text="${user.mail}"></th>
+                        <th scope="row" th:text="${user.roles}"></th>
+                        <th scope="row" th:text="${user.active}"></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- footer -->
+<div th:insert="fragments/components :: footer"></div>
+
+</body>
+</html>
