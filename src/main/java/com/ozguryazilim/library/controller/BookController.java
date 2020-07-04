@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import com.ozguryazilim.library.repository.BookRepo;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Optional;
+
 @Controller
 public class BookController {
     @Autowired
@@ -52,12 +54,20 @@ public class BookController {
     // edit form page
     @GetMapping("/books/edit/{id}")
     public String editBook(Model model, @PathVariable(value = "id") Long id) {
+        Optional<Book> book = bookRepo.findById(id);
+
+        // send book's authorId & publisherId
+        // this will set the select/option as selected
+        model.addAttribute("authorId",book.get().getAuthor().getId().toString());
+        model.addAttribute("publisherId",book.get().getPublisher().getId().toString());
+
         // send selected book to thymeleaf as a model attribute
-        model.addAttribute("selectedBook", bookRepo.findById(id));
+        model.addAttribute("selectedBook", book);
         // author listing
         model.addAttribute("authors", authorRepo.findAll());
         // publisher listing
         model.addAttribute("publishers", publisherRepo.findAll());
+        System.out.println(model.getAttribute("selectedBook"));
         return "editBook";
     }
 

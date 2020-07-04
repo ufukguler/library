@@ -36,15 +36,22 @@
         <div class="form-group">
             <label for="authorId">Author</label>
             <select id="authorId" name="authorId" class="form-control" required>
-                <option disabled selected value>Select an Author</option>
-                <option th:each="author: ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+                <option
+                        th:each="author: ${authors}"
+                        th:value="${author.id}"
+                        th:selected="${author.id} == ${authorId}"
+                        th:text="${author.name}">
+                </option>
             </select>
         </div>
         <div class="form-group">
             <label for="publisherId">Publisher</label>
             <select id="publisherId" name="publisherId" class="form-control" required>
-                <option disabled value>Select a publisher</option>
-                <option th:each="publisher: ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}"></option>
+                <option th:each="publisher: ${publishers}"
+                        th:selected="${publisher.id} == ${publisherId}"
+                        th:value="${publisher.id}"
+                        th:text="${publisher.name}">
+                </option>
             </select>
         </div>
         <div class="form-group">
