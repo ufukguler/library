@@ -25,12 +25,7 @@ $ GRANT ALL PRIVILEGES ON 'library'.* TO 'library'@'localhost';
 $ FLUSH PRIVILEGES;
 $ CREATE DATABASE library CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
-### Run the app.
-#### Linux
-```sh
-$ ./mvn clean spring-boot:run
-```
-#### Windows
+### Run
 ```sh
 $ mvn clean spring-boot:run
 ```
