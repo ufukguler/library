@@ -32,7 +32,7 @@ public class BookController {
         model.addAttribute("newBook", new Book());
         model.addAttribute("authors", authorRepo.findAll());
         model.addAttribute("publishers", publisherRepo.findAll());
-        return "newBook";
+            return "newBook";
     }
 
     @PostMapping("books/new")
@@ -40,7 +40,7 @@ public class BookController {
         book.setAuthor(authorRepo.getOne(Long.valueOf(book.getAuthorId())));
         book.setPublisher(publisherRepo.getOne(Long.valueOf(book.getPublisherId())));
         bookRepo.save(book);
-        return "books";
+        return "redirect:/books";
     }
 
     @GetMapping("/books/edit/{id}")
