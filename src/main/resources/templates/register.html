@@ -19,10 +19,10 @@
                             <h3 class="text-center text-info">Register</h3>
                             <h6 th:if="${param.mail}" class="text-center" style="color: red;">E-mail exist!</h6>
                             <h6 th:if="${param.username}" class="text-center" style="color: red;">Username exist!</h6>
-                            <h6 th:if="${param.success}" class="text-center" style="color: green;">
+                            <h5 th:if="${param.success}" class="text-center" style="color: green;">
                                 Succesfully Registered!
                                 <a href="/login">Login</a>
-                            </h6>
+                            </h5>
                             <div class="form-group">
                                 <label for="mail" class="text-info">E-Mail:</label><br>
                                 <input type="email" name="mail" id="mail" class="form-control" required>
