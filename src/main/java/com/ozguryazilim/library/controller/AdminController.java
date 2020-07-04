@@ -23,8 +23,14 @@ public class AdminController {
     public String admin(Model model){
         // get all users
         List<User> userList = userRepo.findAll();
+
+        // remove admin from list (admin should not demote itself)
+        Optional<User> removeAdmin = userRepo.findByUsername("admin");
+        userList.remove(removeAdmin.get());
         // send user list
         model.addAttribute("users",userList);
+        model.addAttribute("allusers",userRepo.findAll());
+
         return "admin";
     }
     @PostMapping("admin/changeRole")

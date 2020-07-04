@@ -13,7 +13,6 @@
 
 <div class="container">
     <h2>Change User Role</h2>
-    <h6 style="color: red;">You can also change your role to the USER.</h6>
     <h5 th:if="${param.success}" class="text-center">Success.</h5>
     <form th:action="@{/admin/changeRole}" method="post" th:object="${users}">
         <h6 th:if="${param.success}" class="text-center" style="color: green;">Role successfully changed!</h6>
@@ -54,13 +53,13 @@
                     <td>Active</td>
                 </tr>
                 </thead>
-                <tbody th:object="${users}" >
-                    <tr th:each="user: ${users}">
-                        <th scope="row" th:text="${user.id}"></th>
-                        <th scope="row" th:text="${user.username}"></th>
-                        <th scope="row" th:text="${user.mail}"></th>
-                        <th scope="row" th:text="${user.roles}"></th>
-                        <th scope="row" th:text="${user.active}"></th>
+                <tbody th:object="${allusers}">
+                    <tr th:each="list: ${allusers}">
+                        <th scope="row" th:text="${list.id}"></th>
+                        <th scope="row" th:text="${list.username}"></th>
+                        <th scope="row" th:text="${list.mail}"></th>
+                        <th scope="row" th:text="${list.roles}"></th>
+                        <th scope="row" th:text="${list.active}"></th>
                     </tr>
                 </tbody>
             </table>
