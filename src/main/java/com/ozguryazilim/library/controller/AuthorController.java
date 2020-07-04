@@ -42,11 +42,9 @@ public class AuthorController {
     }
 
     @PostMapping("/authors/edit/{id}")
-    public String updateAuthor(Model model, Author author, @PathVariable(value = "id") Long id) {
+    public String updateAuthor(Author author, @PathVariable(value = "id") Long id) {
         author.setId(id);
         authorRepo.updateAuthor(id, author.getName(), author.getComment());
-        model.addAttribute("selectedAuthor", authorRepo.findById(id));
-        model.addAttribute("id", authorRepo.findById(id).get().getId().toString());
         return "redirect:/authors";
     }
 
