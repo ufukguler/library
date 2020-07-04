@@ -49,11 +49,36 @@ public class MyRunner implements CommandLineRunner {
 
         Author author2 = new Author("Stephen Hawking","Popular Science");
         Publisher pub2 = new Publisher("Bantam Dell Publishing Group","about...");
-        Book book2 = new Book("A Brief History of Time","alt","series",9786051067582L,"stephen",author2,pub2);
+        Book book2 = new Book("A Brief History of Time","alt","series",9786051067582L,"about...",author2,pub2);
 
         AuthorRepo.save(author2);
         PublisherRepo.save(pub2);
         BookRepo.save(book2);
+
+        Author author3 = new Author("Halide Edib Adıvar","Novel");
+        Publisher pub3 = new Publisher("Can Yayınları","about...");
+        Book book3 = new Book("Sinekli Bakkal","The Clown and His Daughter","series",9789750707766L,"halide",author3,pub3);
+
+        AuthorRepo.save(author3);
+        PublisherRepo.save(pub3);
+        BookRepo.save(book3);
+
+        Author author4 = new Author("Reşat Nuri Güntekin","Novel");
+        Publisher pub4 = new Publisher("İnkılap Kitabevi ","about...");
+        Book book4 = new Book("Acımak","alt","series",9789751026569L,"reşat nuri",author4,pub4);
+
+        AuthorRepo.save(author4);
+        PublisherRepo.save(pub4);
+        BookRepo.save(book4);
+
+        Author author5 = new Author("Oğuz Atay","Novel");
+        Publisher pub5 = new Publisher("İletişim Yayınları","about...");
+        Book book5 = new Book("Tutunamayanlar","alt","series",9789754700114L,"oğuz",author5,pub5);
+
+        AuthorRepo.save(author5);
+        PublisherRepo.save(pub5);
+        BookRepo.save(book5);
+
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User admin = new User();
