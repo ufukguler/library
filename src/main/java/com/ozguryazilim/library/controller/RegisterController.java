@@ -16,28 +16,36 @@ public class RegisterController {
     @Autowired
     UserRepo userRepo;
 
+    // registration page
     @GetMapping("/register")
     public String register() {
         return "register";
     }
 
+    // reigster form post request
     @PostMapping("register")
     public String registerPost(User user, RedirectAttributes redirectAttributes) {
 
+        // get username & mail from the form
         String username = user.getUsername();
         String mail = user.getMail();
+        // check if these variables are exists at DB
         Optional<User> checkUser = userRepo.findByUsername(username);
         Optional<User> checkMail = userRepo.findByMail(mail);
 
-        // check if username and mail not exist on user table at database
+        // if not exist
         if ( !checkUser.isPresent() ) {
             if ( !checkMail.isPresent() ) {
+                //then create a new user object
                 User newUser = new User();
                 newUser.setUsername(user.getUsername());
                 newUser.setMail(user.getMail());
                 newUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
                 newUser.setActive(true);
+                // set as a regular user
+                // admin can change a user's role
                 newUser.setRoles("ROLE_USER");
+                // save
                 userRepo.save(newUser);
                 redirectAttributes.addAttribute("success", "");
                 return "redirect:/register";

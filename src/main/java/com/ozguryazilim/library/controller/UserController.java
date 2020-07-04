@@ -20,6 +20,7 @@ public class UserController {
     @Autowired
     UserRepo userRepo;
 
+    // user settings page
     @GetMapping("/profile")
     public String profile(Model model){
         // get current user's username
@@ -33,6 +34,7 @@ public class UserController {
         return "profile";
     }
 
+    // edit mail form post request
     @PostMapping("/profile/editEmail")
     public String editMail(Model model, User user, RedirectAttributes redirectAttributes){
 
@@ -56,8 +58,9 @@ public class UserController {
             redirectAttributes.addAttribute("efail","");
             return "redirect:/profile";
         }
-
     }
+
+    // edit password form post request
     @PostMapping("/profile/editPass")
     public String changePass(Model model, User user, RedirectAttributes redirectAttributes){
         Optional<User> currentUser = userRepo.findByUsername(user.getUsername());

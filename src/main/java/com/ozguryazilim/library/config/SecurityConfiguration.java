@@ -23,6 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    // ewb security configurations
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -49,6 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsService userDetailsService;
 
+    // user authentication ~ log in proccess
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);

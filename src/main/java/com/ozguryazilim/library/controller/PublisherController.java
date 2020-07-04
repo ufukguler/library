@@ -16,44 +16,52 @@ public class PublisherController {
     @Autowired
     PublisherRepo publisherRepo;
 
+    // listing
     @GetMapping("/publishers")
     public String showAll(Model model) {
+        // send all publishers to thymeleaf
         model.addAttribute("publishers", publisherRepo.findAll());
         return "publishers";
     }
 
+    // add publisher page
     @GetMapping("/publishers/new")
-    public String newPublisher(Model model) {
-        model.addAttribute("newPublisher", new Book());
+    public String newPublisher() {
         return "newPublisher";
     }
 
+    // add publisher form post
     @PostMapping("publishers/new")
     public String newPublisher(Publisher publisher) {
+        // save to DB
         publisherRepo.save(publisher);
         return "redirect:/publishers";
     }
 
+    // edit publisher page
     @GetMapping("/publishers/edit/{id}")
     public String editPublisher(Model model, @PathVariable(value = "id") Long id) {
+        // filling out the form with the publisher's information
         model.addAttribute("selectedPublisher", publisherRepo.findById(id));
         return "editPublisher";
     }
 
+    // publisher edit post request
     @PostMapping("/publishers/edit/{id}")
     public String updateAuthor(Model model, Publisher publisher, @PathVariable(value = "id") Long id) {
+        //set publisher id by path variable
         publisher.setId(id);
+        // update publisher
         publisherRepo.updatePublisher(id, publisher.getName(), publisher.getComment());
-        model.addAttribute("selectedPublisher", publisherRepo.findById(id));
-        model.addAttribute("id", publisherRepo.findById(id).get().getId().toString());
         return "redirect:/publishers";
     }
 
+    // delet publisher
     @GetMapping("/publishers/delete/{id}")
     public String deleteAuthor(@PathVariable(value = "id") long id, RedirectAttributes redirectAttributes) {
         publisherRepo.deleteById(id);
         boolean isFound = publisherRepo.existsById(id);
-        if(isFound)
+        if(isFound) // return parameter to show result
             redirectAttributes.addAttribute("false", "");
         else
             redirectAttributes.addAttribute("true", "");
