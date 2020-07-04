@@ -13,12 +13,39 @@
             <li><a href="/authors">Authors</a></li>
             <li><a href="/publishers">Publishers</a></li>
         </ul>
-        <a href="/logout"><button class="btn btn-danger navbar-btn pull-right">Logout</button></a>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    <b sec:authentication="name"></b>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="/profile" target="_blank">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> User Settings
+                        </a>
+                    </li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a href="/admin" target="_blank">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Change User Role
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/logout">
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
 </nav>
 
 <footer class="page-footer font-small special-color-dark pt-4" th:fragment="footer">
-    <div class="footer-copyright text-center py-3"> Library application </div>
+    <div class="footer-copyright text-center py-3"> Library application</div>
 </footer>
 </body>
 </html>

@@ -7,21 +7,33 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <title>Home Page</title>
+    <title>Home</title>
 </head>
 <body>
 <div th:insert="fragments/components :: menu"></div>
+<main class="container" role="main">
+    <div class="container-fluid text-center">
+        <h1>Welcome to Library!</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi assumenda deserunt eaque eum illo itaque labore non repudiandae voluptas. Cumque.</p>
+        <hr>
 
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    Logged user: <span sec:authentication="name"></span><br>
-    Roles: <span sec:authentication="principal.authorities"></span>
-</div>
-
-<div sec:authorize="hasRole('ROLE_USER')">
-    Logged user: <span sec:authentication="name"></span><br>
-    Roles: <span sec:authentication="principal.authorities"></span>
-</div>
-
+        <div class="row">
+            <table class="table table-striped " style="margin: auto; width: 30% !important;">
+                <tbody>
+                <tr>
+                    <th scope="row" >Logged User</th>
+                    <td sec:authentication="name"></td>
+                </tr>
+                <tr>
+                    <th scope="row">User Role</th>
+                    <td sec:authentication="principal.authorities"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<br><br>
 <div th:insert="fragments/components :: footer"></div>
 </body>
 </html>
