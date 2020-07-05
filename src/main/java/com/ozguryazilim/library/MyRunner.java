@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 
 @Component
 public class MyRunner implements CommandLineRunner {
@@ -18,68 +20,54 @@ public class MyRunner implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(MyRunner.class);
 
     @Autowired
-    private BookRepo BookRepo;
+    private BookRepo bookRepo;
 
     @Autowired
-    private AuthorRepo AuthorRepo;
+    private AuthorRepo authorRepo;
 
     @Autowired
-    private PublisherRepo PublisherRepo;
+    private PublisherRepo publisherRepo;
 
     @Autowired
     private UserRepo userRepo;
 
     @Override
-    public void run(String[] args){
-        Author author = new Author("Yuval Noah Harari","cultural evolution");
-        Publisher pub = new Publisher("Harper","about.");
-        Book book = new Book("Sapiens: A Brief History of Humankind","Sapiens: Hayvanlardan Tanrılara İnsan Türünün Kısa Bir Tarihi","series",9780099590088L,"קיצור תולדות האנושות\u200E",author,pub);
+    public void run(String[] args) {
 
-        AuthorRepo.save(author);
-        PublisherRepo.save(pub);
-        BookRepo.save(book);
+        // jk rownling - harryPotter
+        Author joanneRownling = new Author("J. K. Rowling", "British author");
+        authorRepo.save(joanneRownling);
 
-        Author author1 = new Author("Arthur C. Clarke","sci-fi");
-        Publisher pub1 = new Publisher("Ballantine Books ","about..");
-        Book book1 = new Book("Childhood's End","Çocukluğun Sonu","series",9786053755111L,"published in 1953",author1,pub1);
+        Publisher bloomsbury = new Publisher("Bloomsbury", "Bloomsbury Publishing plc");
+        publisherRepo.save(bloomsbury);
 
-        AuthorRepo.save(author1);
-        PublisherRepo.save(pub1);
-        BookRepo.save(book1);
+        bookRepo.save(new Book("Philosopher's Stone", "-", "Harry Potter", 9781524721251L, "published in 1997", joanneRownling, bloomsbury));
+        bookRepo.save(new Book("Chamber of Secrets", "-", "Harry Potter", 9780807281918L, "published in 1998", joanneRownling, bloomsbury));
+        bookRepo.save(new Book("Prisoner of Azkaban", "-", "Harry Potter", 9780807283158L, "published in 1999", joanneRownling, bloomsbury));
 
-        Author author2 = new Author("Stephen Hawking","Popular Science");
-        Publisher pub2 = new Publisher("Bantam Dell Publishing Group","about...");
-        Book book2 = new Book("A Brief History of Time","Zamanın Kısa Tarihi: Büyük Patlamadan Karadeliklere","series",9786051067582L,"popular-science book on cosmology",author2,pub2);
+        // georgeRRMartin -- gameOfThrones
+        Author georgeMartin = new Author("George R. R. Martin", "American novelist");
+        authorRepo.save(georgeMartin);
 
-        AuthorRepo.save(author2);
-        PublisherRepo.save(pub2);
-        BookRepo.save(book2);
+        Publisher bantamSpectra = new Publisher("Bantam Spectra", "Bantam Books/Random House");
+        publisherRepo.save(bantamSpectra);
 
-        Author author3 = new Author("Halide Edib Adıvar","Novel");
-        Publisher pub3 = new Publisher("Can Yayınları","about...");
-        Book book3 = new Book("Sinekli Bakkal","The Clown and His Daughter","series",9789750707766L,"published in English in 1935",author3,pub3);
+        bookRepo.save(new Book("A Game of Thrones", "-", "A Song of Ice and Fire", 9780008132200L, "published in 1996", georgeMartin, bantamSpectra));
+        bookRepo.save(new Book("A Clash of Kings", "-", "A Song of Ice and Fire", 9780006479895L, "published in 1998", georgeMartin, bantamSpectra));
+        bookRepo.save(new Book("A Storm of Swords", "-", "A Song of Ice and Fire", 9780002245869L, "published in 2000", georgeMartin, bantamSpectra));
 
-        AuthorRepo.save(author3);
-        PublisherRepo.save(pub3);
-        BookRepo.save(book3);
+        // lord of the rings
+        Author tolkien = new Author("J. R. R. Tolkien", "English writer, poet, philologist");
+        authorRepo.save(tolkien);
 
-        Author author4 = new Author("Reşat Nuri Güntekin","Novel");
-        Publisher pub4 = new Publisher("İnkılap Kitabevi ","about...");
-        Book book4 = new Book("Acımak","Feeling Pity","series",9789751026569L,"written in 1928",author4,pub4);
+        Publisher allenUnwin = new Publisher("George Allen & Unwin", "British Publishing Company");
+        publisherRepo.save(allenUnwin);
 
-        AuthorRepo.save(author4);
-        PublisherRepo.save(pub4);
-        BookRepo.save(book4);
+        bookRepo.save(new Book("The Fellowship of the Ring", "-", "The Lord of the Rings", 9788845292248L, "published in 1954", tolkien, allenUnwin));
+        bookRepo.save(new Book("The Two Towers", "-", "The Lord of the Rings", 9780261103399L, "published in 1954", tolkien, allenUnwin));
+        bookRepo.save(new Book("The Return of the King", "-", "The Lord of the Rings", 9780261103405L, "published in 1955", tolkien, allenUnwin));
 
-        Author author5 = new Author("Oğuz Atay","Novel");
-        Publisher pub5 = new Publisher("İletişim Yayınları","about...");
-        Book book5 = new Book("Tutunamayanlar","The Disconnected","series",9789754700114L,"the first novel of Oğuz Atay",author5,pub5);
-
-        AuthorRepo.save(author5);
-        PublisherRepo.save(pub5);
-        BookRepo.save(book5);
-
-
+        // pre defined admin
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User admin = new User();
         admin.setUsername("admin");
@@ -89,6 +77,7 @@ public class MyRunner implements CommandLineRunner {
         admin.setRoles("ROLE_ADMIN");
         userRepo.save(admin);
 
+        // pre defined user
         User user = new User();
         user.setUsername("user");
         user.setPassword(passwordEncoder.encode("123"));
