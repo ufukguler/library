@@ -2,6 +2,7 @@ package com.ozguryazilim.library.controller;
 
 import com.ozguryazilim.library.model.Book;
 import com.ozguryazilim.library.model.Publisher;
+import com.ozguryazilim.library.repository.BookRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class PublisherController {
     @Autowired
     PublisherRepo publisherRepo;
+
+    @Autowired
+    BookRepo bookRepo;
 
     // listing
     @GetMapping("/publishers")
@@ -43,6 +47,8 @@ public class PublisherController {
     public String editPublisher(Model model, @PathVariable(value = "id") Long id) {
         // filling out the form with the publisher's information
         model.addAttribute("selectedPublisher", publisherRepo.findById(id));
+        // addattr. book(s) from this publisher
+        model.addAttribute("books",bookRepo.findAuthors2(id));
         return "editPublisher";
     }
 
