@@ -2,6 +2,7 @@ package com.ozguryazilim.library.controller;
 
 import com.ozguryazilim.library.model.Author;
 import com.ozguryazilim.library.model.Book;
+import com.ozguryazilim.library.repository.BookRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthorController {
     @Autowired
     AuthorRepo authorRepo;
+
+    @Autowired
+    BookRepo bookRepo;
 
     // author listing
     @GetMapping("/authors")
@@ -43,6 +47,8 @@ public class AuthorController {
         // filling out the form with the author's information
         model.addAttribute("selectedAuthor", authorRepo.findById(id));
         model.addAttribute("id", authorRepo.findById(id).get().getId().toString());
+        // return author's book(s)
+        model.addAttribute("books",bookRepo.findByAuthorId(id).toArray());
         return "editAuthor";
     }
 

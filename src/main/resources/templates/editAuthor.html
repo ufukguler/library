@@ -26,6 +26,30 @@
         </div>
     </form>
 </div>
+<main class="container" role="main">
+    <div class="container-fluid">
+        <h1>This Author's Books</h1>
+        <hr>
+        <div class="row">
+            <table class="table table-striped ">
+                <thead>
+                <tr>
+                    <td>Book Id</td>
+                    <td>Title</td>
+                    <td>comment</td>
+                </tr>
+                </thead>
+                <tbody th:object="${books}">
+                <tr th:each="list: ${books}">
+                    <th scope="row" th:text="${list.id}"></th>
+                    <th scope="row" th:text="${list.title}"></th>
+                    <th scope="row" th:text="${list.comment}"></th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
 <!-- footer -->
 <div th:insert="fragments/components :: footer"></div>
 
