@@ -6,18 +6,19 @@ Library  is a spring boot project that you can add a book, author, and publisher
 - Login / Register
 - Change Password / Email
 - Display Book, Author & Publisher
+- Display Author's Books & Publisher's Published Books
 - Add Book, Author & Publisher
 - Delete Book, Author & Publisher _(admin only)_
 - Change User Role (User | Admin) _(admin only)_
 
 ### Tech
 Library uses a couple of open source projects to work properly:
-* [jQuery](https://jquery.com/) - JavaScript Library
-* [Bootstrap](https://getbootstrap.com/) - Front-end Framework 
-* [Thymeleaf](https://www.thymeleaf.org/) - Server-Side Java Template Engine
-* [MySQL](https://www.mysql.com/) - Relational Database Management System
-* [Maven](https://maven.apache.org/) - Project Management Tool
 * [Spring Framework](https://spring.io/) - Dependency Injection Container
+* [Maven](https://maven.apache.org/) - Project Management Tool
+* [MySQL](https://www.mysql.com/) - Relational Database Management System
+* [Thymeleaf](https://www.thymeleaf.org/) - Server-Side Java Template Engine
+* [Bootstrap](https://getbootstrap.com/) - Front-end Framework 
+* [jQuery](https://jquery.com/) - JavaScript Library
 
 ### Installation
  - Create MySQL User & Database
@@ -31,8 +32,6 @@ $ FLUSH PRIVILEGES;
 ```sh
 $ mvn clean spring-boot:run
 ```
-
-
 
 ### Predefined Admin & User
 ```sh
