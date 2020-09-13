@@ -34,13 +34,11 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/new")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String newAuthor() {
         return "newAuthor";
     }
 
     @PostMapping("authors/new")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String newAuthor(AuthorDTO author) {
         authorService.create(author);
         return "redirect:/authors";

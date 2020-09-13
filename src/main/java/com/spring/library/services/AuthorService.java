@@ -31,6 +31,10 @@ public class AuthorService {
         return authorRepo.findAuthorsByActiveTrue();
     }
 
+    public Optional<Author> getById(Long id){
+        return  authorRepo.findAuthorsByIdAndActiveIsTrue(id);
+    }
+
     public Author create(AuthorDTO authorDTO) {
         Author author = new Author();
         author.setName(authorDTO.getName());
@@ -41,7 +45,7 @@ public class AuthorService {
     public Model editAuthor(Model model, Long id) {
         model.addAttribute("selectedAuthor", authorRepo.findById(id));
         model.addAttribute("id", authorRepo.findById(id).get().getId());
-        model.addAttribute("books", bookRepo.findByAuthorId(id).toArray());
+        model.addAttribute("books", bookRepo.findByAuthor_IdAndActiveTrue(id).toArray());
         return model;
     }
 
@@ -53,6 +57,7 @@ public class AuthorService {
             throw new IllegalArgumentException("author not found!");
 
         author.get().setActive(!author.get().isActive());
+        author.get().getBooks().stream().forEach(book -> book.setActive(false));
         return authorRepo.save(author.get());
     }
 
