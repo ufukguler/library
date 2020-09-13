@@ -30,6 +30,9 @@ public class PublisherService {
         return publisherRepo.findPublishersByActiveTrue();
     }
 
+    public Optional<Publisher> getById(Long id){
+        return  publisherRepo.findPublishersByIdAndActiveIsTrue(id);
+    }
     public Publisher create(PublisherDTO publisherDTO) {
         Publisher publisher = new Publisher();
         publisher.setName(publisherDTO.getName());
@@ -38,8 +41,8 @@ public class PublisherService {
     }
 
     public Model editPublisher(Model model, Long id) {
-        model.addAttribute("selectedPublisher", publisherRepo.findById(id));
-        model.addAttribute("books", bookRepo.findAuthors2(id));
+        model.addAttribute("selectedPublisher", publisherRepo.findPublishersByIdAndActiveIsTrue(id));
+        model.addAttribute("books", bookRepo.findAllByPublisher_IdAndActiveIsTrue(id));
         return model;
     }
 
@@ -50,6 +53,7 @@ public class PublisherService {
             throw new IllegalArgumentException("publisher not found!");
 
         publisher.get().setActive(!publisher.get().isActive());
+        publisher.get().getBooks().stream().forEach(book -> book.setActive(false));
         return publisherRepo.save(publisher.get());
     }
 

@@ -30,13 +30,11 @@ public class PublisherController {
     }
 
     @GetMapping("/publishers/new")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String newPublisher() {
         return "newPublisher";
     }
 
     @PostMapping("publishers/new")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String newPublisher(PublisherDTO publisherDTO) {
         publisherService.create(publisherDTO);
         return "redirect:/publishers";

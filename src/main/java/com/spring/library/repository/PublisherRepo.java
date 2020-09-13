@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface PublisherRepo extends JpaRepository<Publisher, Long> {
-    Optional<Publisher> findByName(String name);
-
     List<Publisher> findPublishersByActiveTrue();
+
+    Optional<Publisher> findPublishersByIdAndActiveIsTrue(Long id);
 }
