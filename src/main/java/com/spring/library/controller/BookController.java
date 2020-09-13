@@ -1,97 +1,69 @@
 package com.spring.library.controller;
 
 import com.spring.library.entity.Book;
-import com.spring.library.repository.AuthorRepo;
-import com.spring.library.repository.PublisherRepo;
+import com.spring.library.model.BookDTO;
+import com.spring.library.model.BookUpdateDTO;
+import com.spring.library.services.AuthorService;
+import com.spring.library.services.BookService;
+import com.spring.library.services.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.spring.library.repository.BookRepo;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Optional;
 
 @Controller
 public class BookController {
-    @Autowired
-    BookRepo bookRepo;
+
+    private BookService bookService;
+    private AuthorService authorService;
+    private PublisherService publisherService;
 
     @Autowired
-    AuthorRepo authorRepo;
+    public BookController(BookService bookService, AuthorService authorService, PublisherService publisherService) {
+        this.bookService = bookService;
+        this.authorService = authorService;
+        this.publisherService = publisherService;
+    }
 
-    @Autowired
-    PublisherRepo publisherRepo;
-
-    // list all books
     @GetMapping("/books")
-    public String showAll(Model model) {
-        model.addAttribute("books", bookRepo.findAll());
+    public String getAll(Model model) {
+        model.addAttribute("books", bookService.getAll());
         return "books";
     }
 
-    // add book form page
     @GetMapping("/books/new")
     public String newBook(Model model) {
-        // send author and publisher list to the "<select>" form
-        model.addAttribute("authors", authorRepo.findAll());
-        model.addAttribute("publishers", publisherRepo.findAll());
-            return "newBook";
+        model.addAttribute("authors", authorService.getAll());
+        model.addAttribute("publishers", publisherService.getAll());
+        return "newBook";
     }
 
-    // add new book form post request
     @PostMapping("books/new")
-    public String newBook(Book book) {
-        // set book author by author id
-        book.setAuthor(authorRepo.getOne(Long.valueOf(book.getAuthorId())));
-        // set book publisher by publisher id
-        book.setPublisher(publisherRepo.getOne(Long.valueOf(book.getPublisherId())));
-        // save book to DB
-        bookRepo.save(book);
+    public String newBook(BookDTO bookDTO) {
+        bookService.create(bookDTO);
         return "redirect:/books";
     }
 
-    // edit form page
     @GetMapping("/books/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editBook(Model model, @PathVariable(value = "id") Long id) {
-        Optional<Book> book = bookRepo.findById(id);
-
-        // send book's authorId & publisherId
-        // this will set the select/option as selected
-        model.addAttribute("authorId",book.get().getAuthor().getId());
-        model.addAttribute("publisherId",book.get().getPublisher().getId());
-
-        // send selected book to thymeleaf as a model attribute
-        model.addAttribute("selectedBook", book);
-        // author listing
-        model.addAttribute("authors", authorRepo.findAll());
-        // publisher listing
-        model.addAttribute("publishers", publisherRepo.findAll());
-        System.out.println(model.getAttribute("selectedBook"));
+        bookService.editBook(model, id);
         return "editBook";
     }
 
-    // edit book form post request
     @RequestMapping(value = "/books/edit/{id}", method = RequestMethod.POST)
-    public String updateBook(Model model, Book book, @PathVariable(value = "id") Long id) {
-        // set new author by author id
-        book.setAuthor(authorRepo.getOne(Long.valueOf(book.getAuthorId())));
-        // set new publisher by publisher id
-        book.setPublisher(publisherRepo.getOne(Long.valueOf(book.getPublisherId())));
-        // save book
-        bookRepo.save(book);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateBook(BookUpdateDTO bookUpdateDTO, @PathVariable(value = "id") Long id) {
+        bookService.updateBook(bookUpdateDTO);
         return "redirect:/books";
     }
 
     @GetMapping("/books/delete/{id}")
-    public String deleteBook(@PathVariable(value = "id") long id, RedirectAttributes redirectAttributes) {
-        // does book exists check
-        bookRepo.deleteById(id);
-        boolean isFound = bookRepo.existsById(id);
-        if (isFound)  // if deleted send parameter to display result on books page
-            redirectAttributes.addAttribute("false", "");
-        else
-            redirectAttributes.addAttribute("true", "");
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteBook(@PathVariable(value = "id") long id) {
+        bookService.delete(id);
         return "redirect:/books";
     }
 }

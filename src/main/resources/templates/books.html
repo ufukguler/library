@@ -29,6 +29,7 @@
         <table class="table table-striped" id="myTable">
             <thead>
                 <tr style="font-weight: bold;">
+                    <td scope="col">ID</td>
                     <td scope="col">Title</td>
                     <td scope="col">Author</td>
                     <td scope="col">Publisher</td>
@@ -42,6 +43,7 @@
             </thead>
             <tbody>
                 <tr th:each="book:${books}">
+                    <td th:text="${book.id}"></td>
                     <td th:text="${book.title}"></td>
                     <td>
                         <a th:href="@{/authors/edit/{id}(id=${book.author.id})}">

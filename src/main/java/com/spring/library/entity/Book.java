@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "BOOK")
 @EntityListeners(AuditingEntityListener.class)
-public class Book  extends EntityBase{
+public class Book extends EntityBase {
 
     @Column(name = "TITLE", length = 255)
     private String title;
@@ -19,7 +19,7 @@ public class Book  extends EntityBase{
     @Column(name = "SERIES", length = 255)
     private String series;
 
-    @Column(name = "ISBN", length = 255,unique = true)
+    @Column(name = "ISBN", length = 255, unique = true)
     private Long isbn;
 
     @Column(name = "COMMENT", length = 255)
@@ -37,16 +37,10 @@ public class Book  extends EntityBase{
     @JsonManagedReference
     private Publisher publisher;
 
-    @Transient
-    private String authorId;
-
-    @Transient
-    private String publisherId;
-
     public Book() {
     }
 
-    public Book(String title, String alt, String series, Long isbn, String comment, Author author, Publisher publisher, String authorId, String publisherId) {
+    public Book(String title, String alt, String series, Long isbn, String comment, Author author, Publisher publisher) {
         this.title = title;
         this.alt = alt;
         this.series = series;
@@ -54,8 +48,6 @@ public class Book  extends EntityBase{
         this.comment = comment;
         this.author = author;
         this.publisher = publisher;
-        this.authorId = authorId;
-        this.publisherId = publisherId;
     }
 
     public String getTitle() {
@@ -114,22 +106,6 @@ public class Book  extends EntityBase{
         this.publisher = publisher;
     }
 
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
-
-    public String getPublisherId() {
-        return publisherId;
-    }
-
-    public void setPublisherId(String publisherId) {
-        this.publisherId = publisherId;
-    }
-
     @Override
     public String toString() {
         return "Book{" +
@@ -140,8 +116,6 @@ public class Book  extends EntityBase{
                 ", comment='" + comment + '\'' +
                 ", author=" + author +
                 ", publisher=" + publisher +
-                ", authorId='" + authorId + '\'' +
-                ", publisherId='" + publisherId + '\'' +
                 '}';
     }
 }
