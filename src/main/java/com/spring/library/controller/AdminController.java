@@ -3,6 +3,7 @@ package com.spring.library.controller;
 import com.spring.library.entity.User;
 import com.spring.library.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ public class AdminController {
 
     // change user role page
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String admin(Model model){
         // get all users
         List<User> userList = userRepo.findAll();
@@ -34,6 +36,7 @@ public class AdminController {
         return "admin";
     }
     @PostMapping("admin/changeRole")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String changeRole(User user, RedirectAttributes redirectAttributes){
         //get the user to edit
         Optional<User> currentUser = userRepo.findById(Long.valueOf(user.getId()));
