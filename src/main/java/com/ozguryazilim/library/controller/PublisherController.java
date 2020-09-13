@@ -1,76 +1,65 @@
 package com.ozguryazilim.library.controller;
 
-import com.ozguryazilim.library.model.Book;
-import com.ozguryazilim.library.model.Publisher;
+import com.ozguryazilim.library.model.PublisherDTO;
 import com.ozguryazilim.library.repository.BookRepo;
+import com.ozguryazilim.library.services.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.ozguryazilim.library.repository.PublisherRepo;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class PublisherController {
-    @Autowired
-    PublisherRepo publisherRepo;
 
-    @Autowired
+    PublisherService publisherService;
     BookRepo bookRepo;
 
-    // listing
+    @Autowired
+    public PublisherController(PublisherService publisherService, BookRepo bookRepo) {
+        this.publisherService = publisherService;
+        this.bookRepo = bookRepo;
+    }
+
     @GetMapping("/publishers")
-    public String showAll(Model model) {
-        // send all publishers to thymeleaf
-        model.addAttribute("publishers", publisherRepo.findAll());
+    public String getAll(Model model) {
+        model.addAttribute("publishers", publisherService.getAll());
         return "publishers";
     }
 
-    // add publisher page
     @GetMapping("/publishers/new")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String newPublisher() {
         return "newPublisher";
     }
 
-    // add publisher form post
     @PostMapping("publishers/new")
-    public String newPublisher(Publisher publisher) {
-        // save to DB
-        publisherRepo.save(publisher);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String newPublisher(PublisherDTO publisherDTO) {
+        publisherService.create(publisherDTO);
         return "redirect:/publishers";
     }
 
-    // edit publisher page
     @GetMapping("/publishers/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editPublisher(Model model, @PathVariable(value = "id") Long id) {
-        // filling out the form with the publisher's information
-        model.addAttribute("selectedPublisher", publisherRepo.findById(id));
-        // addattr. book(s) from this publisher
-        model.addAttribute("books",bookRepo.findAuthors2(id));
+        model = publisherService.editPublisher(model,id);
         return "editPublisher";
     }
 
-    // publisher edit post request
     @PostMapping("/publishers/edit/{id}")
-    public String updateAuthor(Model model, Publisher publisher, @PathVariable(value = "id") Long id) {
-        //set publisher id by path variable
-        publisher.setId(id);
-        // update publisher
-        publisherRepo.updatePublisher(id, publisher.getName(), publisher.getComment());
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateAuthor(PublisherDTO publisherDTO, @PathVariable(value = "id") Long id) {
+        publisherService.updatePublisher(publisherDTO);
         return "redirect:/publishers";
     }
 
-    // delet publisher
     @GetMapping("/publishers/delete/{id}")
-    public String deleteAuthor(@PathVariable(value = "id") long id, RedirectAttributes redirectAttributes) {
-        publisherRepo.deleteById(id);
-        boolean isFound = publisherRepo.existsById(id);
-        if(isFound) // return parameter to show result
-            redirectAttributes.addAttribute("false", "");
-        else
-            redirectAttributes.addAttribute("true", "");
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteAuthor(@PathVariable(value = "id") Long id) {
+        publisherService.delete(id);
         return "redirect:/publishers";
     }
 
