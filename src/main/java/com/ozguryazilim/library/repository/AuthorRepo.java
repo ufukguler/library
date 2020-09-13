@@ -1,18 +1,15 @@
 package com.ozguryazilim.library.repository;
 
+import com.ozguryazilim.library.entity.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import com.ozguryazilim.library.model.Author;
 
-import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AuthorRepo extends JpaRepository<Author, Long> {
+    Optional<Author> findByName(String name);
 
-    @Modifying
-    @Transactional
-    @Query(value = "update author set name= :name,comment= :comment where id = :id", nativeQuery = true)
-    int updateAuthor(Long id,String name, String comment);
+    List<Author> findAuthorsByActiveTrue();
 }

@@ -1,79 +1,69 @@
 package com.ozguryazilim.library.controller;
 
-import com.ozguryazilim.library.model.Author;
-import com.ozguryazilim.library.model.Book;
+import com.ozguryazilim.library.model.AuthorDTO;
+import com.ozguryazilim.library.model.AuthorUpdateDTO;
+import com.ozguryazilim.library.repository.AuthorRepo;
 import com.ozguryazilim.library.repository.BookRepo;
+import com.ozguryazilim.library.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.ozguryazilim.library.repository.AuthorRepo;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthorController {
+
+    BookRepo bookRepo;
     @Autowired
     AuthorRepo authorRepo;
+    private AuthorService authorService;
 
     @Autowired
-    BookRepo bookRepo;
+    public AuthorController(AuthorService authorService, BookRepo bookRepo) {
+        this.authorService = authorService;
+        this.bookRepo = bookRepo;
+    }
 
-    // author listing
     @GetMapping("/authors")
-    public String showAll(Model model) {
-        model.addAttribute("authors", authorRepo.findAll());
+    public String getAll(Model model) {
+        model.addAttribute("authors", authorService.getAll());
         return "authors";
     }
 
-    // add author page
     @GetMapping("/authors/new")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String newAuthor() {
         return "newAuthor";
     }
 
-    // add new author form post request
     @PostMapping("authors/new")
-    public String newAuthor(Author author) {
-        // save to DB
-        authorRepo.save(author);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String newAuthor(AuthorDTO author) {
+        authorService.create(author);
         return "redirect:/authors";
     }
 
-    // author edit form page
     @GetMapping("/authors/edit/{id}")
-    public String newAuthor(Model model, @PathVariable(value = "id") Long id) {
-        // filling out the form with the author's information
-        model.addAttribute("selectedAuthor", authorRepo.findById(id));
-        model.addAttribute("id", authorRepo.findById(id).get().getId().toString());
-        // return author's book(s)
-        model.addAttribute("books",bookRepo.findByAuthorId(id).toArray());
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String editAuthor(Model model, @PathVariable(value = "id") Long id) {
+        model = authorService.editAuthor(model, id);
         return "editAuthor";
     }
 
-    // author edit form post request
     @PostMapping("/authors/edit/{id}")
-    public String updateAuthor(Author author, @PathVariable(value = "id") Long id) {
-        // get author id from path variable and set author id to update it
-        author.setId(id);
-        // update author query
-        authorRepo.updateAuthor(id, author.getName(), author.getComment());
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateAuthor(AuthorUpdateDTO authorUpdateDTO, @PathVariable(value = "id") Long id) {
+        authorService.updateAuthor(authorUpdateDTO);
         return "redirect:/authors";
     }
 
-    // author delete page
     @GetMapping("/authors/delete/{id}")
-    public String deleteAuthor(@PathVariable(value = "id") long id, RedirectAttributes redirectAttributes) {
-        // does author exists check
-        authorRepo.deleteById(id);
-        boolean isFound = authorRepo.existsById(id);
-        // send parameter
-        // if deleted there will be a notfication as "Deleted." on authors page
-        if(isFound)
-            redirectAttributes.addAttribute("false", "");
-        else
-            redirectAttributes.addAttribute("true", "");
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteAuthor(@PathVariable(value = "id") Long id) {
+        authorService.delete(id);
         return "redirect:/authors";
     }
 
