@@ -84,7 +84,6 @@ public class BookService {
         book.get().setTitle(bookUpdateDTO.getTitle());
         book.get().setAlt(bookUpdateDTO.getAlt());
         book.get().setComment(bookUpdateDTO.getComment());
-        book.get().setIsbn(bookUpdateDTO.getIsbn());
         book.get().setSeries(bookUpdateDTO.getSeries());
         book.get().setAuthor(author.get());
         book.get().setPublisher(publisher.get());

@@ -13,23 +13,23 @@ public class BookDTO {
     private Long id;
 
     @NotBlank
-    @Size(max =255, min = 3)
+    @Size(max = 255, min = 3, message = "is required")
     private String title;
 
     @NotBlank
-    @Size(max =255, min = 3)
+    @Size(max = 255, min = 3, message = "is required")
     private String alt;
 
     @NotBlank
-    @Size(max =255, min = 3)
+    @Size(max = 255, min = 3, message = "is required")
     private String series;
 
     @NotBlank
-    @Size(max =255, min = 3)
+    @Size(max = 255, min = 3, message = "is required")
     private Long isbn;
 
     @NotBlank
-    @Size(max =255, min = 3)
+    @Size(max = 255, min = 3, message = "is required")
     private String comment;
 
     @NotBlank

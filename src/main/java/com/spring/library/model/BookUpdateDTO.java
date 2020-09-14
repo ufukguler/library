@@ -12,23 +12,19 @@ public class BookUpdateDTO {
     private Long id;
 
     @NotBlank
-    @Size(max =255, min = 3)
+    @Size(max = 255, min = 3, message = "is required")
     private String title;
 
     @NotBlank
-    @Size(max =255, min = 3)
+    @Size(max = 255, min = 3, message = "is required")
     private String alt;
 
     @NotBlank
-    @Size(max =255, min = 3)
+    @Size(max = 255, min = 3, message = "is required")
     private String series;
 
     @NotBlank
-    @Size(max =255, min = 3)
-    private Long isbn;
-
-    @NotBlank
-    @Size(max =255, min = 3)
+    @Size(max = 255, min = 3, message = "is required")
     private String comment;
 
     @NotBlank
@@ -67,14 +63,6 @@ public class BookUpdateDTO {
 
     public void setSeries(String series) {
         this.series = series;
-    }
-
-    public Long getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(Long isbn) {
-        this.isbn = isbn;
     }
 
     public String getComment() {

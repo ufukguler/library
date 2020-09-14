@@ -15,23 +15,19 @@
     <form th:action="@{ /books/edit/{id}(id=${id})}"  th:object="${selectedBook}" method="post">
         <div class="form-group">
             <label for="title">Title</label>
-            <input class="form-control" type="text" id="title" placeholder="Title" th:field="*{title}" required>
+            <input class="form-control" type="text" id="title" placeholder="Title" th:field="*{title}" maxlength="255" required>
         </div>
         <div class="form-group">
             <label for="alt">Alt Title</label>
-            <input class="form-control" type="text" id="alt" placeholder="Alt Title" th:field="*{alt}" required>
+            <input class="form-control" type="text" id="alt" placeholder="Alt Title" th:field="*{alt}" maxlength="255" required>
         </div>
         <div class="form-group">
             <label for="series">Series</label>
-            <input class="form-control" type="text" id="series" placeholder="Series" th:field="*{series}" required>
-        </div>
-        <div class="form-group">
-            <label for="isbn">ISBN</label>
-            <input class="form-control" type="text" id="isbn" title="13 digits" maxlength="13" minlength="13" placeholder="ISBN" th:field="*{isbn}" required>
+            <input class="form-control" type="text" id="series" placeholder="Series" th:field="*{series}" maxlength="255" required>
         </div>
         <div class="form-group">
             <label for="about">About</label>
-            <input class="form-control" type="text" id="about" placeholder="About" th:field="*{comment}" required>
+            <input class="form-control" type="text" id="about" placeholder="About" th:field="*{comment}" maxlength="255" required>
         </div>
         <div class="form-group">
             <label for="authorId">Author</label>

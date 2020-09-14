@@ -11,9 +11,11 @@ import javax.validation.constraints.Size;
 public class PublisherUpdateDTO {
 
     @NotBlank
-    @Size(max = 255, min = 3, message = "lütfen geçerli bir kitap ismi giriniz")
+    @Size(max = 255, min = 3, message = "is required")
     private String name;
 
+    @NotBlank
+    @Size(max = 255, min = 3, message = "is required")
     private String comment;
 
     public String getName() {
