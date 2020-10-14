@@ -42,7 +42,7 @@ public class AdminService {
         currentUser.get().setRoles(user.getRoles());
         // save user
         userRepo.save(currentUser.get());
-        redirectAttributes.addAttribute("success", "");
+        redirectAttributes.addAttribute("success", "updated");
     }
 
 }

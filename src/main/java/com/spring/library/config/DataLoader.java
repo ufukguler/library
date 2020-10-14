@@ -27,13 +27,13 @@ public class DataLoader implements CommandLineRunner {
     public void run(String[] args) {
 
         if (!userRepo.existsUserByUsername("admin")) {
-            User admin = new User("admin", null, "admin@libary.com", true, "ROLE_ADMIN");
+            User admin = new User("admin", null, "admin@library.com", true, "ROLE_ADMIN");
             admin.setPassword(new BCryptPasswordEncoder().encode("123"));
             userRepo.save(admin);
             logger.info("Saved user : " + admin.toString());
         }
         if (!userRepo.existsUserByUsername("user")) {
-            User user = new User("user", null, "user@libary.com", true, "ROLE_USER");
+            User user = new User("user", null, "user@library.com", true, "ROLE_USER");
             user.setPassword(new BCryptPasswordEncoder().encode("123"));
             userRepo.save(user);
             logger.info("Saved user : " + user.toString());

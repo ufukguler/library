@@ -1,12 +1,14 @@
 package com.spring.library.services;
 
 import com.spring.library.entity.User;
+import com.spring.library.model.UserDTO;
 import com.spring.library.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 /**
@@ -21,7 +23,7 @@ public class RegisterService {
         this.userRepo = userRepo;
     }
 
-    public String registerPost(User user, RedirectAttributes redirectAttributes) {
+    public String registerPost(UserDTO user, RedirectAttributes redirectAttributes) {
 
         // check if these variables are exists at DB
         Optional<User> checkUser = userRepo.findByUsername(user.getUsername());
@@ -30,7 +32,12 @@ public class RegisterService {
         return userCheck(user, checkUser, checkMail, redirectAttributes);
     }
 
-    private String userCheck(User user, Optional<User> checkUser, Optional<User> checkMail, RedirectAttributes redirectAttributes) {
+    private String userCheck(UserDTO user, Optional<User> checkUser, Optional<User> checkMail, RedirectAttributes redirectAttributes) {
+        if(user.getMail().isEmpty() || user.getUsername().isEmpty() || user.getPassword().isEmpty()){
+            redirectAttributes.addAttribute("error", "");
+            return "redirect:/register";
+        }
+
         if (!checkUser.isPresent()) {
             if (!checkMail.isPresent()) {
                 //then create a new user object
@@ -39,7 +46,7 @@ public class RegisterService {
                 newUser.setRoles("ROLE_USER");
 
                 userRepo.save(newUser);
-                redirectAttributes.addAttribute("success", null);
+                redirectAttributes.addAttribute("success","registered");
                 return "redirect:/register";
 
             } else { // if mail exist
