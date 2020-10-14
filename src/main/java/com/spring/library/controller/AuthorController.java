@@ -2,9 +2,9 @@ package com.spring.library.controller;
 
 import com.spring.library.model.AuthorDTO;
 import com.spring.library.model.AuthorUpdateDTO;
-import com.spring.library.repository.AuthorRepo;
 import com.spring.library.repository.BookRepo;
 import com.spring.library.services.AuthorService;
+import com.spring.library.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,15 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class AuthorController {
 
-    BookRepo bookRepo;
-    @Autowired
-    AuthorRepo authorRepo;
-    private AuthorService authorService;
+    private final AuthorService authorService;
 
     @Autowired
-    public AuthorController(AuthorService authorService, BookRepo bookRepo) {
+    public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
-        this.bookRepo = bookRepo;
     }
 
     @GetMapping("/authors")

@@ -16,7 +16,7 @@ public class DataLoader implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(DataLoader.class);
 
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
     @Autowired
     public DataLoader(UserRepo userRepo) {
@@ -26,15 +26,17 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String[] args) {
 
-        if(!userRepo.existsUserByUsername("admin")) {
-            User admin = new User("admin",null,"admin@libary.com",true,"ROLE_ADMIN");
+        if (!userRepo.existsUserByUsername("admin")) {
+            User admin = new User("admin", null, "admin@libary.com", true, "ROLE_ADMIN");
             admin.setPassword(new BCryptPasswordEncoder().encode("123"));
             userRepo.save(admin);
+            logger.info("Saved user : " + admin.toString());
         }
-        if(!userRepo.existsUserByUsername("user")) {
-            User user = new User("user",null,"user@libary.com",true,"ROLE_USER");
+        if (!userRepo.existsUserByUsername("user")) {
+            User user = new User("user", null, "user@libary.com", true, "ROLE_USER");
             user.setPassword(new BCryptPasswordEncoder().encode("123"));
             userRepo.save(user);
+            logger.info("Saved user : " + user.toString());
         }
     }
 }

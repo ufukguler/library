@@ -2,6 +2,7 @@ package com.spring.library.controller;
 
 import com.spring.library.entity.User;
 import com.spring.library.repository.UserRepo;
+import com.spring.library.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,60 +20,30 @@ public class UserController {
 
     @Autowired
     UserRepo userRepo;
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     // user settings page
     @GetMapping("/profile")
-    public String profile(Model model){
-        // get current user's username
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = (principal instanceof UserDetails) ? ((UserDetails)principal).getUsername() : principal.toString();
-        // get email from username
-        Optional<User> getUserMail = userRepo.findByUsername(username);
-        String email = getUserMail.get().getMail();
-        // send mail attr. to thymeleaf
-        model.addAttribute("mail",email);
+    public String profile(Model model) {
+        userService.profile(model);
         return "profile";
     }
 
     // edit mail form post request
     @PostMapping("/profile/editEmail")
-    public String editMail(Model model, User user, RedirectAttributes redirectAttributes){
-
-        // check if mail exist in DB
-        Optional<User> checkMail = userRepo.findByMail(user.getMail());
-
-        // if not then update it
-        if ( !checkMail.isPresent() ){
-            Optional<User> currentUser = userRepo.findByUsername(user.getUsername());
-            // set user
-            user.setId(currentUser.get().getId());
-            user.setActive(true);
-            user.setMail(user.getMail());
-            user.setPassword(currentUser.get().getPassword());
-            user.setRoles(currentUser.get().getRoles());
-            //update user mail
-            userRepo.save(user);
-            redirectAttributes.addAttribute("esuccess","");
-            return "redirect:/profile";
-        }else{
-            redirectAttributes.addAttribute("efail","");
-            return "redirect:/profile";
-        }
+    public String editMail(Model model, User user, RedirectAttributes redirectAttributes) {
+        return userService.editMail(model, user, redirectAttributes);
     }
 
     // edit password form post request
     @PostMapping("/profile/editPass")
-    public String changePass(Model model, User user, RedirectAttributes redirectAttributes){
-        Optional<User> currentUser = userRepo.findByUsername(user.getUsername());
-        // set user
-        user.setId(currentUser.get().getId());
-        user.setActive(true);
-        user.setMail(currentUser.get().getMail());
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setRoles(currentUser.get().getRoles());
-        //update user password
-        userRepo.save(user);
-        redirectAttributes.addAttribute("psuccess","");
+    public String updatePassword(Model model, User user, RedirectAttributes redirectAttributes) {
+        userService.updatePassword(model, user, redirectAttributes);
         return "redirect:/profile";
     }
 }

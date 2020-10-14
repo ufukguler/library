@@ -16,9 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class BookController {
 
-    private BookService bookService;
-    private AuthorService authorService;
-    private PublisherService publisherService;
+    private final BookService bookService;
+    private final AuthorService authorService;
+    private final PublisherService publisherService;
 
     @Autowired
     public BookController(BookService bookService, AuthorService authorService, PublisherService publisherService) {

@@ -14,13 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class PublisherController {
 
-    PublisherService publisherService;
-    BookRepo bookRepo;
+    private final PublisherService publisherService;
 
     @Autowired
-    public PublisherController(PublisherService publisherService, BookRepo bookRepo) {
+    public PublisherController(PublisherService publisherService) {
         this.publisherService = publisherService;
-        this.bookRepo = bookRepo;
     }
 
     @GetMapping("/publishers")
@@ -43,7 +41,7 @@ public class PublisherController {
     @GetMapping("/publishers/edit/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editPublisher(Model model, @PathVariable(value = "id") Long id) {
-        model = publisherService.editPublisher(model,id);
+        model = publisherService.editPublisher(model, id);
         return "editPublisher";
     }
 
