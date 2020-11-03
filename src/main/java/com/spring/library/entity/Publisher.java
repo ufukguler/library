@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "publisher")
+@Table(name = "PUBLISHER")
 public class Publisher  extends EntityBase{
 
     @Column(name = "NAME", unique = true)
