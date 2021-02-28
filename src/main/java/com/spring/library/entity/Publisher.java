@@ -1,41 +1,35 @@
-package com.ozguryazilim.library.model;
+package com.spring.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "publisher")
-public class Publisher {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Table(name = "PUBLISHER")
+public class Publisher  extends EntityBase{
 
+    @Column(name = "NAME", unique = true)
     private String name;
 
+    @Column(name = "COMMENT", length = 255)
     private String comment;
 
     // 1->n book-publisher
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY, mappedBy = "publisher")
-    private List<Book> books = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publisher")
+    @JsonBackReference
+    private Set<Book> books;
 
-    public Publisher(){}
+    public Publisher() {
+    }
 
     public Publisher(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -53,11 +47,11 @@ public class Publisher {
         this.comment = comment;
     }
 
-    public List<Book> getBooks() {
+    public Set<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Set<Book> books) {
         this.books = books;
     }
 }
