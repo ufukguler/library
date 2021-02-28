@@ -1,60 +1,45 @@
-package com.ozguryazilim.library.model;
+package com.spring.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "book")
+@Table(name = "BOOK")
 @EntityListeners(AuditingEntityListener.class)
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Book extends EntityBase {
 
+    @Column(name = "TITLE", length = 255)
     private String title;
 
+    @Column(name = "ALT", length = 255)
     private String alt;
 
+    @Column(name = "SERIES", length = 255)
     private String series;
 
+    @Column(name = "ISBN", length = 255, unique = true)
     private Long isbn;
 
+    @Column(name = "COMMENT", length = 255)
     private String comment;
 
     // 1->n author-book
     @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
+    @JoinColumn(name = "AUTHOR_ID", nullable = false)
+    @JsonManagedReference
     private Author author;
 
     // 1->n publisher-book
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "publisher_id", nullable = false)
+    @JoinColumn(name = "PUBLISHER_ID", nullable = false)
+    @JsonManagedReference
     private Publisher publisher;
-
-    @Transient
-    private String authorId;
-
-    @Transient
-    private String publisherId;
 
     public Book() {
     }
 
-    public Book(Long id, String title, String alt, String series, Long isbn, String comment, Author author, Publisher publisher, String authorId, String publisherId) {
-        this.id = id;
-        this.title = title;
-        this.alt = alt;
-        this.series = series;
-        this.isbn = isbn;
-        this.comment = comment;
-        this.author = author;
-        this.publisher = publisher;
-        this.authorId = authorId;
-        this.publisherId = publisherId;
-    }
-
-    // main constructor
     public Book(String title, String alt, String series, Long isbn, String comment, Author author, Publisher publisher) {
         this.title = title;
         this.alt = alt;
@@ -63,14 +48,6 @@ public class Book {
         this.comment = comment;
         this.author = author;
         this.publisher = publisher;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -129,35 +106,16 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
-
-    public String getPublisherId() {
-        return publisherId;
-    }
-
-    public void setPublisherId(String publisherId) {
-        this.publisherId = publisherId;
-    }
-
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", alt='" + alt + '\'' +
                 ", series='" + series + '\'' +
                 ", isbn=" + isbn +
                 ", comment='" + comment + '\'' +
                 ", author=" + author +
                 ", publisher=" + publisher +
-                ", authorId='" + authorId + '\'' +
-                ", publisherId='" + publisherId + '\'' +
                 '}';
     }
 }
