@@ -21,6 +21,13 @@ Library uses a couple of open source projects to work properly:
 * [jQuery](https://jquery.com/) - JavaScript Library
 
 ### Installation
+
+#### Option 1 (Docker)
+```sh
+$ mvn clean install -DskipTests
+$ docker-compose up
+```
+#### Option 2 
  - Create MySQL User & Database
 ```sh
 $ CREATE USER 'library'@'localhost' IDENTIFIED BY 'LNoa5eelBYdCJpW6';
@@ -28,17 +35,17 @@ $ CREATE DATABASE library CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 $ GRANT ALL PRIVILEGES ON library.* TO 'library'@'localhost';
 $ FLUSH PRIVILEGES;
 ```
-### Run
+##### Run
 ```sh
 $ mvn clean spring-boot:run
 ```
 
-### Predefined Admin & User
+##### Pre-defined Admin & User
 ```sh
-ROLE   login - pass
+ROLE  | login - pass
 -------------------
-ADMIN  admin - 123
-USER   user  - 123
+ADMIN | admin - 123
+USER  | user  - 123
 ```
 ### Login Page
 [http://localhost:8080/login](http://localhost:8080/login)

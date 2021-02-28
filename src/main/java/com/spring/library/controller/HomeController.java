@@ -1,4 +1,4 @@
-package com.ozguryazilim.library.controller;
+package com.spring.library.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

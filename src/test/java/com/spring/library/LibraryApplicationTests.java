@@ -1,4 +1,4 @@
-package com.ozguryazilim.library;
+package com.spring.library;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
