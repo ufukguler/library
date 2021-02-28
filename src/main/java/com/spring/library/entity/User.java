@@ -1,4 +1,4 @@
-package com.ozguryazilim.library.model;
+package com.spring.library.entity;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -6,16 +6,22 @@ import javax.persistence.*;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "user")
+@Table(name = "USER")
 public class  User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
+    @Column(name = "USERNAME", length = 255)
     private String username;
+    @Column(name = "PASSWORD", length = 255)
     private String password;
+    @Column(name = "MAIL", length = 255)
     private String mail;
+    @Column(name = "ACTIVE", length = 255)
     private boolean active;
+    @Column(name = "ROLES", length = 255)
     private String roles;
 
     public User(){}

@@ -1,6 +1,6 @@
-package com.ozguryazilim.library.services;
+package com.spring.library.config;
 
-import com.ozguryazilim.library.model.User;
+import com.spring.library.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

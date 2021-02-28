@@ -1,7 +1,7 @@
-package com.ozguryazilim.library.services;
+package com.spring.library.config;
 
-import com.ozguryazilim.library.model.User;
-import com.ozguryazilim.library.repository.UserRepo;
+import com.spring.library.entity.User;
+import com.spring.library.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

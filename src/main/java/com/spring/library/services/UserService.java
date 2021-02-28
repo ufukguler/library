@@ -1,48 +1,53 @@
-package com.ozguryazilim.library.controller;
+package com.spring.library.services;
 
-import com.ozguryazilim.library.model.User;
-import com.ozguryazilim.library.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.spring.library.entity.User;
+import com.spring.library.repository.UserRepo;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
-@Controller
-public class UserController {
+/**
+ * created by: ufuk on 14.10.2020 11:08
+ */
 
-    @Autowired
-    UserRepo userRepo;
+@Service
+public class UserService {
+    private final UserRepo userRepo;
 
-    // user settings page
-    @GetMapping("/profile")
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
+
+    /**
+     * user profile page
+     * @param model
+     * @return user's email address
+     */
     public String profile(Model model){
-        // get current user's username
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = (principal instanceof UserDetails) ? ((UserDetails)principal).getUsername() : principal.toString();
-        // get email from username
         Optional<User> getUserMail = userRepo.findByUsername(username);
-        String email = getUserMail.get().getMail();
-        // send mail attr. to thymeleaf
-        model.addAttribute("mail",email);
+        model.addAttribute("mail",getUserMail.get().getMail());
         return "profile";
     }
 
-    // edit mail form post request
-    @PostMapping("/profile/editEmail")
-    public String editMail(Model model, User user, RedirectAttributes redirectAttributes){
+    /**
+     * update email post request method
+     * @param model
+     * @param user
+     * @param redirectAttributes
+     * @return
+     */
+    public String editMail(Model model, User user, RedirectAttributes redirectAttributes) {
 
-        // check if mail exist in DB
         Optional<User> checkMail = userRepo.findByMail(user.getMail());
-
-        // if not then update it
-        if ( !checkMail.isPresent() ){
+        // check if mail exist in DB
+        if (!checkMail.isPresent()) {
             Optional<User> currentUser = userRepo.findByUsername(user.getUsername());
             // set user
             user.setId(currentUser.get().getId());
@@ -52,17 +57,22 @@ public class UserController {
             user.setRoles(currentUser.get().getRoles());
             //update user mail
             userRepo.save(user);
-            redirectAttributes.addAttribute("esuccess","");
+            redirectAttributes.addAttribute("esuccess", "");
             return "redirect:/profile";
-        }else{
-            redirectAttributes.addAttribute("efail","");
+        } else {
+            redirectAttributes.addAttribute("efail", "");
             return "redirect:/profile";
         }
     }
 
-    // edit password form post request
-    @PostMapping("/profile/editPass")
-    public String changePass(Model model, User user, RedirectAttributes redirectAttributes){
+    /**
+     * update password post request method
+     * @param model
+     * @param user
+     * @param redirectAttributes
+     * @return
+     */
+    public String updatePassword(Model model, User user, RedirectAttributes redirectAttributes) {
         Optional<User> currentUser = userRepo.findByUsername(user.getUsername());
         // set user
         user.setId(currentUser.get().getId());
@@ -72,7 +82,7 @@ public class UserController {
         user.setRoles(currentUser.get().getRoles());
         //update user password
         userRepo.save(user);
-        redirectAttributes.addAttribute("psuccess","");
+        redirectAttributes.addAttribute("psuccess", "");
         return "redirect:/profile";
     }
 }
