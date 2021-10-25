@@ -1,9 +1,11 @@
 package com.spring.library.services;
 
 import com.spring.library.entity.User;
-import com.spring.library.repository.UserRepo;
+import com.spring.library.model.UserUpdateDto;
+import com.spring.library.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -16,73 +18,37 @@ import java.util.Optional;
  */
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
 
-    public UserService(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public void profile(Model model){
+        model.addAttribute("mail",getCurrentUser().getMail());
     }
 
-    /**
-     * user profile page
-     * @param model
-     * @return user's email address
-     */
-    public String profile(Model model){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = (principal instanceof UserDetails) ? ((UserDetails)principal).getUsername() : principal.toString();
-        Optional<User> getUserMail = userRepo.findByUsername(username);
-        model.addAttribute("mail",getUserMail.get().getMail());
-        return "profile";
-    }
-
-    /**
-     * update email post request method
-     * @param model
-     * @param user
-     * @param redirectAttributes
-     * @return
-     */
-    public String editMail(Model model, User user, RedirectAttributes redirectAttributes) {
-
-        Optional<User> checkMail = userRepo.findByMail(user.getMail());
-        // check if mail exist in DB
+    public void editMail(UserUpdateDto userUpdateDto, RedirectAttributes redirectAttributes) {
+        Optional<User> checkMail = userRepository.findByMail(userUpdateDto.getMail());
         if (!checkMail.isPresent()) {
-            Optional<User> currentUser = userRepo.findByUsername(user.getUsername());
-            // set user
-            user.setId(currentUser.get().getId());
-            user.setActive(true);
-            user.setMail(user.getMail());
-            user.setPassword(currentUser.get().getPassword());
-            user.setRoles(currentUser.get().getRoles());
-            //update user mail
-            userRepo.save(user);
+            User currentUser = getCurrentUser();
+            currentUser.setMail(userUpdateDto.getMail());
+            userRepository.save(currentUser);
             redirectAttributes.addAttribute("esuccess", "");
-            return "redirect:/profile";
         } else {
             redirectAttributes.addAttribute("efail", "");
-            return "redirect:/profile";
         }
     }
 
-    /**
-     * update password post request method
-     * @param model
-     * @param user
-     * @param redirectAttributes
-     * @return
-     */
-    public String updatePassword(Model model, User user, RedirectAttributes redirectAttributes) {
-        Optional<User> currentUser = userRepo.findByUsername(user.getUsername());
-        // set user
-        user.setId(currentUser.get().getId());
-        user.setActive(true);
-        user.setMail(currentUser.get().getMail());
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setRoles(currentUser.get().getRoles());
-        //update user password
-        userRepo.save(user);
+    public void updatePassword(UserUpdateDto userUpdateDto, RedirectAttributes redirectAttributes) {
+        User currentUser = getCurrentUser();
+        currentUser.setPassword(new BCryptPasswordEncoder().encode(userUpdateDto.getPassword()));
+        userRepository.save(currentUser);
         redirectAttributes.addAttribute("psuccess", "");
-        return "redirect:/profile";
+    }
+
+    @SneakyThrows
+    public User getCurrentUser(){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<User> byMail = userRepository.findByUsername(name);
+        return byMail.orElseThrow(() -> new Exception("Kullanıcı bulunamadı."));
     }
 }

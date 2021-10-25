@@ -6,9 +6,9 @@ package com.spring.library.services;
 
 import com.spring.library.entity.Publisher;
 import com.spring.library.model.PublisherDTO;
-import com.spring.library.repository.BookRepo;
-import com.spring.library.repository.PublisherRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.spring.library.repository.BookRepository;
+import com.spring.library.repository.PublisherRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -16,56 +16,50 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PublisherService {
-    private PublisherRepo publisherRepo;
-    private BookRepo bookRepo;
+    private final PublisherRepository publisherRepository;
+    private final BookRepository bookRepository;
 
-    @Autowired
-    public PublisherService(PublisherRepo publisherRepo, BookRepo bookRepo) {
-        this.publisherRepo = publisherRepo;
-        this.bookRepo = bookRepo;
-    }
 
     public List<Publisher> getAll() {
-        return publisherRepo.findPublishersByActiveTrue();
+        return publisherRepository.findPublishersByActiveTrue();
     }
 
-    public Optional<Publisher> getById(Long id){
-        return  publisherRepo.findPublishersByIdAndActiveIsTrue(id);
+    public Optional<Publisher> getById(Long id) {
+        return publisherRepository.findPublishersByIdAndActiveIsTrue(id);
     }
-    public Publisher create(PublisherDTO publisherDTO) {
+
+    public void create(PublisherDTO publisherDTO) {
         Publisher publisher = new Publisher();
         publisher.setName(publisherDTO.getName());
         publisher.setComment(publisherDTO.getComment());
-        return publisherRepo.save(publisher);
+        publisherRepository.save(publisher);
     }
 
-    public Model editPublisher(Model model, Long id) {
-        model.addAttribute("selectedPublisher", publisherRepo.findPublishersByIdAndActiveIsTrue(id));
-        model.addAttribute("books", bookRepo.findAllByPublisher_IdAndActiveIsTrue(id));
-        return model;
+    public void editPublisher(Model model, Long id) {
+        model.addAttribute("selectedPublisher", publisherRepository.findPublishersByIdAndActiveIsTrue(id));
+        model.addAttribute("books", bookRepository.findAllByPublisher_IdAndActiveIsTrue(id));
     }
 
     public Publisher delete(Long id) {
-        Optional<Publisher> publisher = publisherRepo.findById(id);
-
-        if (!publisher.isPresent())
+        Optional<Publisher> publisher = publisherRepository.findById(id);
+        if (!publisher.isPresent()) {
             throw new IllegalArgumentException("publisher not found!");
-
+        }
         publisher.get().setActive(!publisher.get().isActive());
-        publisher.get().getBooks().stream().forEach(book -> book.setActive(false));
-        return publisherRepo.save(publisher.get());
+        publisher.get().getBooks().forEach(book -> book.setActive(false));
+        return publisherRepository.save(publisher.get());
     }
 
-    public Publisher updatePublisher(PublisherDTO publisherDTO) {
-        Optional<Publisher> publisher = publisherRepo.findById(publisherDTO.getId());
-
-        if (!publisher.isPresent())
+    public void updatePublisher(PublisherDTO publisherDTO) {
+        Optional<Publisher> publisher = publisherRepository.findById(publisherDTO.getId());
+        if (!publisher.isPresent()) {
             throw new IllegalArgumentException("publisher not found!");
-
+        }
         publisher.get().setName(publisherDTO.getName());
         publisher.get().setComment(publisherDTO.getComment());
-        return publisherRepo.save(publisher.get());
+        publisherRepository.save(publisher.get());
     }
 
 }

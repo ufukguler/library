@@ -1,8 +1,8 @@
 package com.spring.library.services;
 
 import com.spring.library.entity.User;
-import com.spring.library.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.spring.library.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -15,34 +15,24 @@ import java.util.Optional;
  */
 
 @Service
+@RequiredArgsConstructor
 public class AdminService {
-    private UserRepo userRepo;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public AdminService(UserRepo userRepo) {
-        this.userRepo = userRepo;
-    }
-
-    public Model adminPage(Model model) {
-        List<User> userList = userRepo.findAll();
-
-        // remove admin from list (admin should not demote itself)
-        Optional<User> removeAdmin = userRepo.findByUsername("admin");
-        userList.remove(removeAdmin.get());
-        // send user list
+    public void adminPage(Model model) {
+        List<User> userList = userRepository.findAll();
+        userRepository.findByUsername("admin").ifPresent(userList::remove);
         model.addAttribute("users", userList);
-        model.addAttribute("allusers", userRepo.findAll());
-        return model;
+        model.addAttribute("allusers", userRepository.findAll());
     }
 
-    public void changeRole(User user, RedirectAttributes redirectAttributes) {
-        //get the user to edit
-        Optional<User> currentUser = userRepo.findById(Long.valueOf(user.getId()));
-        // change role
-        currentUser.get().setRoles(user.getRoles());
-        // save user
-        userRepo.save(currentUser.get());
+    public void changeRole(User userObj, RedirectAttributes redirectAttributes) {
+        Optional<User> optionalUser = userRepository.findById(userObj.getId());
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setRoles(userObj.getRoles());
+            userRepository.save(user);
+        }
         redirectAttributes.addAttribute("success", "updated");
     }
-
 }

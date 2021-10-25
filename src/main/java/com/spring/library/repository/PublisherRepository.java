@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PublisherRepo extends JpaRepository<Publisher, Long> {
+public interface PublisherRepository extends JpaRepository<Publisher, Long> {
     List<Publisher> findPublishersByActiveTrue();
 
     Optional<Publisher> findPublishersByIdAndActiveIsTrue(Long id);

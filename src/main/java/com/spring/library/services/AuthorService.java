@@ -7,9 +7,9 @@ package com.spring.library.services;
 import com.spring.library.entity.Author;
 import com.spring.library.model.AuthorDTO;
 import com.spring.library.model.AuthorUpdateDTO;
-import com.spring.library.repository.AuthorRepo;
-import com.spring.library.repository.BookRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.spring.library.repository.AuthorRepository;
+import com.spring.library.repository.BookRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -17,58 +17,50 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthorService {
-    private AuthorRepo authorRepo;
-    private BookRepo bookRepo;
-
-    @Autowired
-    public AuthorService(AuthorRepo authorRepo, BookRepo bookRepo) {
-        this.authorRepo = authorRepo;
-        this.bookRepo = bookRepo;
-    }
+    private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
 
     public List<Author> getAll() {
-        return authorRepo.findAuthorsByActiveTrue();
+        return authorRepository.findAuthorsByActiveTrue();
     }
 
     public Optional<Author> getById(Long id){
-        return  authorRepo.findAuthorsByIdAndActiveIsTrue(id);
+        return  authorRepository.findAuthorsByIdAndActiveIsTrue(id);
     }
 
     public Author create(AuthorDTO authorDTO) {
         Author author = new Author();
         author.setName(authorDTO.getName());
         author.setComment(authorDTO.getComment());
-        return authorRepo.save(author);
+        return authorRepository.save(author);
     }
 
-    public Model editAuthor(Model model, Long id) {
-        model.addAttribute("selectedAuthor", authorRepo.findById(id));
-        model.addAttribute("id", authorRepo.findById(id).get().getId());
-        model.addAttribute("books", bookRepo.findByAuthor_IdAndActiveTrue(id).toArray());
-        return model;
+    public void editAuthor(Model model, Long id) {
+        model.addAttribute("selectedAuthor", authorRepository.findById(id));
+        model.addAttribute("id", authorRepository.findById(id).get().getId());
+        model.addAttribute("books", bookRepository.findByAuthor_IdAndActiveTrue(id).toArray());
     }
 
 
     public Author delete(Long id) {
-        Optional<Author> author = authorRepo.findById(id);
-
-        if (!author.isPresent())
+        Optional<Author> author = authorRepository.findById(id);
+        if (!author.isPresent()){
             throw new IllegalArgumentException("author not found!");
-
+        }
         author.get().setActive(!author.get().isActive());
-        author.get().getBooks().stream().forEach(book -> book.setActive(false));
-        return authorRepo.save(author.get());
+        author.get().getBooks().forEach(book -> book.setActive(false));
+        return authorRepository.save(author.get());
     }
 
     public Author updateAuthor(AuthorUpdateDTO authorUpdateDTO) {
-        Optional<Author> author = authorRepo.findById(authorUpdateDTO.getId());
-
-        if (!author.isPresent())
+        Optional<Author> author = authorRepository.findById(authorUpdateDTO.getId());
+        if (!author.isPresent()){
             throw new IllegalArgumentException("author not found!");
-
+        }
         author.get().setName(authorUpdateDTO.getName());
         author.get().setComment(authorUpdateDTO.getComment());
-        return authorRepo.save(author.get());
+        return authorRepository.save(author.get());
     }
 }

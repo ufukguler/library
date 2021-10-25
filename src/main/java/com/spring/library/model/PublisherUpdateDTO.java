@@ -5,9 +5,12 @@ package com.spring.library.model;
 */
 
 
+import lombok.Data;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Data
 public class PublisherUpdateDTO {
 
     @NotBlank
@@ -17,20 +20,4 @@ public class PublisherUpdateDTO {
     @NotBlank
     @Size(max = 255, min = 3, message = "is required")
     private String comment;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 }

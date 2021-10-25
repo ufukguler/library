@@ -4,9 +4,12 @@ package com.spring.library.model;
   Date: 13.09.2020 21:24
 */
 
+import lombok.Data;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Data
 public class AuthorDTO {
 
     private Long id;
@@ -18,28 +21,4 @@ public class AuthorDTO {
     @NotBlank
     @Size(max = 255, min = 3, message = "is required")
     private String comment;
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

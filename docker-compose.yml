@@ -1,36 +1,34 @@
 version: '3.5'
 
 networks:
-  backend:
+  library-backend:
 
 services:
-  db:
-    container_name: db
+  library-db:
+    container_name: library-db
     image: mysql:5.7
-    ports:
-      - '3306:3306'
     restart: always
+    networks:
+      - library-backend
     environment:
-      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_ROOT_PASSWORD=secret-pass
       - MYSQL_DATABASE=library
       - MYSQL_USER=library
       - MYSQL_PASSWORD=LNoa5eelBYdCJpW6
-    networks:
-      - backend
 
-  app-server:
-    image: library_spring_image
+  library-app:
+    container_name: library-app
     ports:
-    - '8080:8080'
+      - '8080:8080'
     networks:
-      - backend
+      - library-backend
     restart: always
     build:
       context: ./
       dockerfile: Dockerfile
     depends_on:
-      - db
+      - library-db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/library?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://library-db:3306/library
       SPRING_DATASOURCE_USERNAME: library
       SPRING_DATASOURCE_PASSWORD: LNoa5eelBYdCJpW6

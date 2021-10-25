@@ -1,9 +1,8 @@
 package com.spring.library.controller;
 
 import com.spring.library.model.PublisherDTO;
-import com.spring.library.repository.BookRepo;
 import com.spring.library.services.PublisherService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,14 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class PublisherController {
-
     private final PublisherService publisherService;
-
-    @Autowired
-    public PublisherController(PublisherService publisherService) {
-        this.publisherService = publisherService;
-    }
+    private static final String REDIRECT_PUBLISHERS = "redirect:/publishers";
 
     @GetMapping("/publishers")
     public String getAll(Model model) {
@@ -35,13 +30,13 @@ public class PublisherController {
     @PostMapping("publishers/new")
     public String newPublisher(PublisherDTO publisherDTO) {
         publisherService.create(publisherDTO);
-        return "redirect:/publishers";
+        return REDIRECT_PUBLISHERS;
     }
 
     @GetMapping("/publishers/edit/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editPublisher(Model model, @PathVariable(value = "id") Long id) {
-        model = publisherService.editPublisher(model, id);
+        publisherService.editPublisher(model, id);
         return "editPublisher";
     }
 
@@ -49,14 +44,14 @@ public class PublisherController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateAuthor(PublisherDTO publisherDTO, @PathVariable(value = "id") Long id) {
         publisherService.updatePublisher(publisherDTO);
-        return "redirect:/publishers";
+        return REDIRECT_PUBLISHERS;
     }
 
     @GetMapping("/publishers/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteAuthor(@PathVariable(value = "id") Long id) {
         publisherService.delete(id);
-        return "redirect:/publishers";
+        return REDIRECT_PUBLISHERS;
     }
 
 }

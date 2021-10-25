@@ -1,11 +1,17 @@
 package com.spring.library.model;
 
-import javax.validation.constraints.*;
+import lombok.Data;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * created by: ufuk on 14.10.2020 12:21
  */
 
+@Data
 public class UserDTO {
 
     @NotEmpty
@@ -20,37 +26,4 @@ public class UserDTO {
 
     @Email
     private String mail;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", mail='" + mail + '\'' +
-                '}';
-    }
 }
